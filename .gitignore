@@ -21,3 +21,11 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Ignore artifacts: (prettier)
+build
+coverage
+
+# my ignore
+template/
+temp.txt
