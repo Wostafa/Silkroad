@@ -19,8 +19,6 @@ function App(): JSX.Element {
 }
 
 const Header = styled.header`
-  // display:flex;
-  // flex
   width: 100%;
 `;
 export default App;
