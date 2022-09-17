@@ -1,13 +1,14 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 import { WrapperCentered, UnstyledButton } from '../StyledElements';
+import { WebsiteTitle } from '../Constants';
 import { Search } from 'react-feather';
 function Header(): JSX.Element {
   return (
     <WrapperCentered>
       <Wrapper>
         {/* <WrapperInner> */}
-        <Logo>Silkroad</Logo>
+        <Logo>{WebsiteTitle}</Logo>
         {/* <Nav> */}
         <List>
           <Item>Home</Item>
@@ -39,6 +40,7 @@ const Wrapper = styled.div`
 // `;
 const Logo = styled.a`
   font-size: calc(34 / 16 * 1rem);
+  font-weight:700;
 `;
 // const Nav = styled.div``;
 const List = styled.ul`

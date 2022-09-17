@@ -34,6 +34,7 @@ function Banner(): JSX.Element {
 const Wrapper = styled.div`
   max-width: var(--max-width-full-wide);
   margin: 0 auto;
+  margin-bottom: var(--margin-row);
   height: 450px;
   background-color: var(--color-fill-page);
   width: 100%;
@@ -65,7 +66,6 @@ const Title = styled.h1`
   font-weight: 700;
   margin: 0;
   max-width: 630px;
-  font-size: calc(40 / 16 * 1rem);
 `;
 const Description = styled.p`
   font-family: var(--font-family-lato);
