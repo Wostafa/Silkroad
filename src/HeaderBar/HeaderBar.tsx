@@ -1,6 +1,7 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import styled from 'styled-components/macro';
-import { ShoppingBag, LogIn } from 'react-feather';
+import { ShoppingBag, User, LogIn } from 'react-feather';
 import { WrapperCentered, UnstyledButton, VisuallyHidden } from '../StyledElements';
 
 function Header(): JSX.Element {
@@ -10,12 +11,17 @@ function Header(): JSX.Element {
         <WrapperInner>
           <Offer>Free shipping on domestic orders over $85!</Offer>
           <WrapperNav>
-            <ButtonLogin>
+            <ButtonLogIn title='Login'>
               <span>Login</span>
               <LogIn size={24} />
-            </ButtonLogin>
+            </ButtonLogIn>
+            <ButtonProfile>
+              <Link to="/profile" title='Profile'>
+                <User size={24} />
+              </Link>
+            </ButtonProfile>
             {/* <div className="header-logout" style={{ display: 'none' }}></div> */}
-            <ButtonBag>
+            <ButtonBag title='Cart'>
               <VisuallyHidden>Cart</VisuallyHidden>
               <ShoppingBag size={24} />
             </ButtonBag>
@@ -48,11 +54,15 @@ const WrapperNav = styled.div`
   gap: 40px;
 `;
 const Offer = styled.div``;
-const ButtonLogin = styled(Button)`
+const ButtonWithText = styled(Button)`
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 8px;
+`;
+const ButtonLogIn = styled(ButtonWithText)`
+`;
+const ButtonProfile = styled(ButtonWithText)`
 `;
 const ButtonBag = styled(Button)``;
 

@@ -57,3 +57,11 @@ export const LinkButton = styled.a`
   }
 `
 
+
+export const Spacer = styled.div`
+  height:${(props: {size: number}) => props.size}px;
+  min-height:${(props: {size: number}) => props.size}px;
+  width: 100%;
+  min-width:100%;
+`
+

@@ -96,6 +96,7 @@ const Wrapper = styled.footer`
   max-width: var(--max-width-full-wide);
   background-color: var(--color-fill-page2);
   height: var(--height-footer);
+  min-height: var(--height-footer);
   padding: 0 var(--gutter2x);
 `;
 const NavWrapper = styled.div`

@@ -3,6 +3,8 @@ import styled from 'styled-components/macro';
 import { WrapperCentered, UnstyledButton } from '../StyledElements';
 import { WebsiteTitle } from '../Constants';
 import { Search } from 'react-feather';
+import { Link } from 'react-router-dom';
+
 function Header(): JSX.Element {
   return (
     <WrapperCentered>
@@ -11,10 +13,14 @@ function Header(): JSX.Element {
         <Logo>{WebsiteTitle}</Logo>
         {/* <Nav> */}
         <List>
-          <Item>Home</Item>
-          <Item>Shop</Item>
-          <Item>Blog</Item>
-          <Item>Contact</Item>
+          <Item><Link to="/">Home</Link></Item>
+          <Item><Link to="/shop">Shop</Link></Item>
+          <Item>
+            <Link to="/about">About</Link>
+          </Item>
+          <Item>
+            <Link to="/contact">Contact</Link>
+          </Item>
         </List>
         <SearchWrapper>
           <Input type={'search'}></Input>
@@ -34,6 +40,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid var(--color-border-gray);
 `;
 // const WrapperInner = styled.div`
 //   height: 40px;
@@ -48,7 +55,13 @@ const List = styled.ul`
   gap: 36px;
   font-family: var(--font-family-lato);
 `;
-const Item = styled.li``;
+const Item = styled.li`
+  font-weight:600;
+
+  &:hover a {
+    color: var(--color-pink-hover);
+  }
+`;
 
 const SearchWrapper = styled.div`
   display: flex;
