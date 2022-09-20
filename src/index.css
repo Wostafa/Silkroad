@@ -85,6 +85,7 @@ table {
   --button-padding: 1rem;
   --input-radius: 4px;
   --box-radius: 10px;
+  --image-radius: 10px;
 
   --letter-spacing-heading-lato: 0.08rem;
   --letter-spacing-lato: 0.01rem;
@@ -132,16 +133,19 @@ a {
   text-decoration: none;
   color:inherit;
 }
-
+b {
+  font-weight: bold;
+}
 input {
   border-radius: var(--input-radius);
 }
 
-input:focus:not(:focus-visible) {
+input:focus:not(:focus-visible), a:focus:not(:focus-visible) {
   outline: none;
 }
-input:focus {
+input:focus, textarea:focus, a:focus {
   outline: 2px solid var(--color-outline);
+  border-radius: var(--button-radius);
   outline-offset: 2px; 
 }
 

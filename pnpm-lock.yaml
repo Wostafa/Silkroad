@@ -24,6 +24,7 @@ specifiers:
   react: ^18.2.0
   react-dom: ^18.2.0
   react-feather: ^2.0.10
+  react-hook-form: ^7.35.0
   react-router-dom: ^6.4.0
   react-scripts: 5.0.1
   styled-components: ^5.3.5
@@ -42,6 +43,7 @@ dependencies:
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-feather: 2.0.10_react@18.2.0
+  react-hook-form: 7.35.0_react@18.2.0
   react-router-dom: 6.4.0_biqbaboplfbrettd7655fr4n2y
   react-scripts: 5.0.1_vpm4epegb5iztd7yhibv2hqiti
   styled-components: 5.3.5_7i5myeigehqah43i5u7wbekgba
@@ -8750,6 +8752,15 @@ packages:
       react: '>=16.8.6'
     dependencies:
       prop-types: 15.8.1
+      react: 18.2.0
+    dev: false
+
+  /react-hook-form/7.35.0_react@18.2.0:
+    resolution: {integrity: sha512-9CYdOed+Itbiu5VMVxW0PK9mBR3f0gDGJcZEyUSm0eJbDymQ913TRs2gHcQZZmfTC+rtxyDFRuelMxx/+xwMcw==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
       react: 18.2.0
     dev: false
 

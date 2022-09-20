@@ -41,6 +41,21 @@ export const Button = styled.button`
     opacity: 0.8;
   }
 `
+export const InputButton = styled.input`
+  background-color: var(--color-pink);
+  padding: 10px 40px;
+  border:none;
+  color:white;
+  border-radius: var(--button-radius);
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1.05rem;
+  font-family: inherit;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`
 export const LinkButton = styled.a`
   background-color: var(--color-pink);
   padding: 15px 20px;

@@ -1,2 +1,26 @@
 {
+  "cSpell.enableFiletypes": [
+    "!asciidoc",
+    "!c",
+    "!cpp",
+    "!csharp",
+    "!elixir",
+    "!erlang",
+    "!go",
+    "!handlebars",
+    "!haskell",
+    "!jade",
+    "!java",
+    "!jupyter",
+    "!latex",
+    "!less",
+    "!php",
+    "!pug",
+    "!python",
+    "!rust",
+    "!scala",
+    "!scss",
+    "!swift",
+    "!vue"
+  ]
 }
