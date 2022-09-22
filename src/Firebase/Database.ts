@@ -1,11 +1,12 @@
 import Config from './Config'
 import { initializeApp } from "firebase/app";
-import { collection, addDoc, getFirestore } from "firebase/firestore";
+import { collection, addDoc, getFirestore, DocumentData } from "firebase/firestore";
 
 const app = initializeApp(Config);
 const db = getFirestore(app);
 
 interface Product {
+  key: string,
   name: string,
   price: number,
   image: string,
@@ -13,21 +14,18 @@ interface Product {
   description: string,
 }
 
-async function addData(product: Product): Promise<any>{
-  try {
-    const docRef = await addDoc(collection(db, "users"), {
+export async function addData(product: Product):Promise<DocumentData>{
+  return await new Promise((resolve, reject)=>{
+    addDoc(collection(db, "users"), {
       ...product
-    });
-    console.log("Document written with ID: ", docRef.id);
-  } 
-  catch (e) {
-    console.error("Error adding document: ", e);
-  }
+    }).then((result)=>{
+      resolve(result);
+      console.log("Data added to Database: ", result);
+
+    }).catch((e)=>{
+      console.error("Error adding to Database: ", e);
+      reject(new Error('Failed to add data to Database'));
+    })
+  })
 
 }
-// addData().then(
-//   (result)=>{},
-//   (error)=> {
-//     console.log(error);
-//   }
-//   );

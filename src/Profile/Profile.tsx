@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { WrapperCentered, Button, Spacer } from '../StyledElements';
+import Upload from '../Firebase/Storage';
+import UserProducts from './UserProducts'
 
 function Profile(): JSX.Element {
   
   interface FormData {
     name: string;
-    category: string;
     price: number;
+    category: string;
+    image: FileList;
     description: string;
   }
 
@@ -32,8 +35,16 @@ function Profile(): JSX.Element {
 
   const onSubmit: SubmitHandler<FormData> = data => {
     const json = JSON.stringify(data);
-    alert(json);
+    console.log(json);
+    Upload(data).then(result=>{
+      setIsUpdated(true);
+      console.log('Product Added: ', result);
+
+    }).catch(e=>{
+      console.log('Product Adding Failed: ', e);
+    });
   };
+  const [isUpdated, setIsUpdated] = useState(false);
 
 
   // (ignore prettier is for eslint comment inside jsx)
@@ -41,43 +52,48 @@ function Profile(): JSX.Element {
   return (
     <WrapperCentered>
       <Wrapper>
-        <h2>Add your Product</h2>
-        {
-          // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        }<Form onSubmit={handleSubmit(onSubmit)}>
-          <InputWrapper>
-            <Label htmlFor="name">Name:</Label>
-            <Name id='name' {...register('name', { required: true })} placeholder="" />
-            {errors.name != null && <InputError>Name is required</InputError>}
-          </InputWrapper>
-          <InputWrapper>
-            <Label htmlFor="category" defaultValue='others'>Category:</Label>
-            <Category id="category" {...register('category')}>
-              <option value="chair">Chair</option>
-              <option value="chair">Chair</option>
-              <option value="others" >
-                Clock
-              </option>
-            </Category>
-          </InputWrapper>
-          <InputWrapper>
-            <Label htmlFor="price">Price:</Label>
-            <Price id="price" type="number" {...register('price', { required: true })} placeholder="" />
-            {errors.price != null && <InputError>Price is required</InputError>}
-          </InputWrapper>
-          <InputWrapper>
-            <Label htmlFor="description">Description:</Label>
-            <Description id="description" {...register('description', { required: true })} />
-          </InputWrapper>
-          <ChooseFileWrapper>
-            <div>Choose an Image:</div>
-            <ChooseFileWrapperInner>
-              <ChooseFile type='file' accept='image/*' onChange={onChooseImage}/>
-              <Image src={image}/>
-            </ChooseFileWrapperInner>
-          </ChooseFileWrapper>
-          <ButtonSubmit>Add</ButtonSubmit>
-        </Form>
+        <WrapperForm>
+          <h2>Add your Product</h2>
+          <h3>{isUpdated && 'Products have been updated!'}</h3>
+          {
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
+          }<Form onSubmit={handleSubmit(onSubmit)}>
+            <InputWrapper>
+              <Label htmlFor="name">Name:</Label>
+              <Name id='name' {...register('name', { required: true })} placeholder="" />
+              {errors.name != null && <InputError>Name is required</InputError>}
+            </InputWrapper>
+            <InputWrapper>
+              <Label htmlFor="category" defaultValue='others'>Category:</Label>
+              <Category id="category" {...register('category')}>
+                <option value="chair">Chair</option>
+                <option value="clock">Clock</option>
+                <option value="others">Others</option>
+              </Category>
+            </InputWrapper>
+            <InputWrapper>
+              <Label htmlFor="price">Price:</Label>
+              <Price id="price" type="number" {...register('price', { required: true })} placeholder="" />
+              {errors.price != null && <InputError>Price is required</InputError>}
+            </InputWrapper>
+            <InputWrapper>
+              <Label htmlFor="description">Description:</Label>
+              <Description id="description" {...register('description', { required: true })} />
+            </InputWrapper>
+            <ChooseFileWrapper>
+              <div>Choose an Image:</div>
+              <ChooseFileWrapperInner>
+                <ChooseFile type='file' accept='image/*' {...register('image',
+                { required: true, onChange: onChooseImage })}/>
+                <Image src={image}/>
+              </ChooseFileWrapperInner>
+              {errors.image != null && <InputError>Image is required</InputError>}
+            </ChooseFileWrapper>
+            <ButtonSubmit>Add</ButtonSubmit>
+          </Form>
+        </WrapperForm>
+        {/* User Product list */}
+        <UserProducts />
       </Wrapper>
       <Spacer size={32}/>
     </WrapperCentered>
@@ -85,10 +101,19 @@ function Profile(): JSX.Element {
 }
 
 const Wrapper = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 16px;
+  justify-content:space-between;
+  margin-top: var(--margin-row);
+
+`;
+const WrapperForm = styled.div`
   h2 {
     color: var(--color-off-blue);
+    margin-top:0;
   }
-  width: 500px;
+  flex:1;
 `;
 const Form = styled.form`
   display: flex;
@@ -129,6 +154,7 @@ const Description = styled.textarea`
   width: 100%;
   height: 250px;
   resize: none;
+  max-width:400px;
 `;
 const ButtonSubmit = styled(Button)`
   width: fit-content;
