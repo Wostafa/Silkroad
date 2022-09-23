@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
-import { ShoppingBag, User, LogIn } from 'react-feather';
+import { ShoppingBag, User as UserIcon, LogIn, LogOut } from 'react-feather';
 import { WrapperCentered, UnstyledButton, VisuallyHidden } from '../StyledElements';
-import { SignIn, UserCredential } from '../Firebase/Authentication';
+import { SignIn, UserCredential, auth, onUserStateChanged, User } from '../Firebase/Authentication';
 
 function Header(): JSX.Element {
+  const [userSignedIn, setUserSignIn] = useState<User | false>(false);
+
   const SignInHandler = (): void => {
     SignIn()
       .then((result: UserCredential) => {
@@ -17,22 +19,62 @@ function Header(): JSX.Element {
       });
   };
 
+  const SignOutHandler = (): void => {
+    auth
+      .signOut()
+      .then(result => {
+        alert('You logged out successfully');
+      })
+      .catch(e => {
+        alert('Logging out failed, please try again');
+      });
+  };
+
+  const LoggedInOut = (): JSX.Element => {
+    if (userSignedIn !== false)
+      return (
+        <LoggedInOutWrapper>
+          <ButtonProfile>
+            <Link to='/profile' title='Profile'>
+              <span>{userSignedIn.displayName}</span>
+              <UserIcon size={24} />
+            </Link>
+          </ButtonProfile>
+          <ButtonLogOut title='logout' onClick={SignOutHandler}>
+            <VisuallyHidden>Logout</VisuallyHidden>
+            <LogOut size={24} />
+          </ButtonLogOut>
+        </LoggedInOutWrapper>
+      );
+    else
+      return (
+        <ButtonLogIn title='Login' onClick={SignInHandler}>
+          <VisuallyHidden>login</VisuallyHidden>
+          <LogIn size={24} />
+        </ButtonLogIn>
+      );
+  };
+
+  useEffect(() => {
+    console.log('render');
+    onUserStateChanged(auth, user => {
+      if (user !== null) {
+        setUserSignIn(user);
+        console.log('im in', user);
+      } else {
+        setUserSignIn(false);
+        console.log('im out', user);
+      }
+    });
+  }, []);
+
   return (
     <Wrapper>
       <WrapperCentered>
         <WrapperInner>
           <Offer>Free shipping on domestic orders over $85!</Offer>
           <WrapperNav>
-            <ButtonLogIn title='Login' onClick={SignInHandler}>
-              <span>Login</span>
-              <LogIn size={24} />
-            </ButtonLogIn>
-            <ButtonProfile>
-              <Link to='/profile' title='Profile'>
-                <User size={24} />
-              </Link>
-            </ButtonProfile>
-            {/* <div className="header-logout" style={{ display: 'none' }}></div> */}
+            <LoggedInOut />
             <ButtonBag title='Cart'>
               <VisuallyHidden>Cart</VisuallyHidden>
               <ShoppingBag size={24} />
@@ -44,6 +86,8 @@ function Header(): JSX.Element {
   );
 }
 const Button = styled(UnstyledButton)`
+  display:flex;
+  align-items: center;
   &:hover {
     opacity: 0.8;
   }
@@ -67,13 +111,22 @@ const WrapperNav = styled.div`
 `;
 const Offer = styled.div``;
 const ButtonWithText = styled(Button)`
-  display: flex;
   justify-content: space-between;
-  align-items: center;
   gap: 8px;
 `;
-const ButtonLogIn = styled(ButtonWithText)``;
-const ButtonProfile = styled(ButtonWithText)``;
+const ButtonLogIn = styled(Button)``;
+const ButtonLogOut = styled(Button)``;
+const ButtonProfile = styled(ButtonWithText)`
+  a {
+    display: flex;
+    gap: 8px;
+    align-items: end;
+  }
+`;
 const ButtonBag = styled(Button)``;
+const LoggedInOutWrapper = styled.div`
+  display: flex;
+  gap: 32px;
+`;
 
 export default Header;
