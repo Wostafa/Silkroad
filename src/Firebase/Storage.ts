@@ -1,10 +1,8 @@
-import Config from './Config'
+import app from './App'
 import { nanoid } from 'nanoid/non-secure';
-import { initializeApp } from "firebase/app";
 import { addData } from './Database';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-const app = initializeApp(Config);
 const storage = getStorage(app);
 
 interface FormData {
@@ -15,8 +13,7 @@ interface FormData {
   description: string;
 }
 
-
-async function Upload(data: FormData): Promise<string> {
+export async function Upload(data: FormData): Promise<string> {
 
   const imageFile = data.image['0'];
   const fileType = imageFile.name.split('.').pop();
@@ -35,6 +32,7 @@ async function Upload(data: FormData): Promise<string> {
           key: nanoid(8),
           image: url,
         }).then(result => {
+          console.log('Data added to Database: ', result);
           resolve('Upload & Download URL & Add to Database OK');
         }).catch(e => {
           console.log('Fail to add to database ', e);
@@ -53,4 +51,3 @@ async function Upload(data: FormData): Promise<string> {
   });
 }
 
-export default Upload;

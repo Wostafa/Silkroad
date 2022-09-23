@@ -1,22 +1,34 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import { ShoppingBag, User, LogIn } from 'react-feather';
 import { WrapperCentered, UnstyledButton, VisuallyHidden } from '../StyledElements';
+import { SignIn, UserCredential } from '../Firebase/Authentication';
 
 function Header(): JSX.Element {
+  const SignInHandler = (): void => {
+    SignIn()
+      .then((result: UserCredential) => {
+        console.log('User logged in', result.user);
+      })
+      .catch(e => {
+        console.log('User login failed', e.message);
+        alert('Signing in failed, please try again');
+      });
+  };
+
   return (
     <Wrapper>
       <WrapperCentered>
         <WrapperInner>
           <Offer>Free shipping on domestic orders over $85!</Offer>
           <WrapperNav>
-            <ButtonLogIn title='Login'>
+            <ButtonLogIn title='Login' onClick={SignInHandler}>
               <span>Login</span>
               <LogIn size={24} />
             </ButtonLogIn>
             <ButtonProfile>
-              <Link to="/profile" title='Profile'>
+              <Link to='/profile' title='Profile'>
                 <User size={24} />
               </Link>
             </ButtonProfile>
@@ -60,10 +72,8 @@ const ButtonWithText = styled(Button)`
   align-items: center;
   gap: 8px;
 `;
-const ButtonLogIn = styled(ButtonWithText)`
-`;
-const ButtonProfile = styled(ButtonWithText)`
-`;
+const ButtonLogIn = styled(ButtonWithText)``;
+const ButtonProfile = styled(ButtonWithText)``;
 const ButtonBag = styled(Button)``;
 
 export default Header;

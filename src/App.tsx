@@ -14,6 +14,7 @@ import About from './About';
 import Shop from './Shop';
 
 function Layout():JSX.Element {
+
   return(
     <Wrapper>
       <Header>
@@ -74,4 +75,6 @@ const Main = styled.main`
 const Header = styled.header`
   width: 100%;
 `;
+
+
 export default App;
