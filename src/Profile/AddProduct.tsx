@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { Button, Loading } from '../StyledElements';
+import { Button, Loading, Notify } from '../StyledElements';
 import { Upload } from '../Firebase/Storage';
+import 'react-toastify/dist/ReactToastify.css';
 // ---------------
 interface Props {
   setProductsUpdated: React.Dispatch<React.SetStateAction<number>>
@@ -31,16 +32,17 @@ function AddProduct(props: Props): JSX.Element {
     const img = URL.createObjectURL(e.target.files?.[0] as Blob);
     setImage(img);
   };
+  
   // ----------------- send product to firebase
-  const [isUpdated, setIsUpdated] = useState(false);
   const onSubmit: SubmitHandler<FormData> = data => {
     setAdding(true);
     const json = JSON.stringify(data);
     console.log(json);
+
     Upload(data)
       .then(result => {
+        Notify.Show.success('Your product added!');
         setAdding(false);
-        setIsUpdated(true);
         props.setProductsUpdated(Date.now());
         console.log('Product Added: ', result);
       })
@@ -49,8 +51,6 @@ function AddProduct(props: Props): JSX.Element {
         console.log('Product Adding Failed: ', e);
       });
   };
-
-
 
   // (ignore prettier is for eslint comment inside jsx)
   // prettier-ignore
@@ -97,8 +97,9 @@ function AddProduct(props: Props): JSX.Element {
           <ButtonSubmit>Add</ButtonSubmit>
         )
         }
-        <MessageAdded>{isUpdated && 'Your product added!'}</MessageAdded>
+
       </Form>
+      <Notify.Layout />  
     </WrapperForm>
   );
 }
@@ -192,8 +193,5 @@ const Image = styled.img`
   object-fit: cover;
   border-radius: var(--image-radius);
 `;
-const MessageAdded = styled.h3`
-  color: var(--color-message-success);
-`
 
 export default AddProduct;

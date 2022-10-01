@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, {keyframes} from "styled-components/macro";
+import { ToastContainer, Slide, toast } from 'react-toastify';
 import { Loader } from 'react-feather';
 
 export const WrapperCentered = styled.div`
@@ -95,5 +96,23 @@ animation: ${effectLoader} 2s linear infinite;
 export const Loading = ():JSX.Element =>{
 
   return <Loader_ size={32} color='#FB2E86'/>
+}
+// ----
+export const Notify = {
+    Show: toast,
+    Layout: () => (
+      <ToastContainer 
+      position="bottom-left"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      transition={Slide}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+    />
+    )
 }
 

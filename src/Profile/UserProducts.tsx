@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/macro';
 import { Trash } from 'react-feather';
-import { UnstyledButton, Loading } from '../StyledElements';
-import { collection, getDocs } from 'firebase/firestore';
+import { UnstyledButton, Loading, Notify } from '../StyledElements';
+import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
 import { db } from '../Firebase/Database';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Product } from '../Constants';
@@ -12,6 +12,7 @@ function UserProducts({ productsUpdated }: {productsUpdated: number}): JSX.Eleme
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [userId, setUserId] = useState<string | false >(false);
+  const [productDeleted, setProductDeleted] = useState<string>('');
 
   // --------
   useEffect(()=>{
@@ -26,7 +27,7 @@ function UserProducts({ productsUpdated }: {productsUpdated: number}): JSX.Eleme
   // ---------
   useEffect(() => {
     if(userId === false) return;
-    console.log('Loading user products...');
+    console.log('Loading user products');
     setIsLoading(true);
 
     const getProducts = async (): Promise<void> => {
@@ -38,11 +39,22 @@ function UserProducts({ productsUpdated }: {productsUpdated: number}): JSX.Eleme
 
       setIsLoading(false);
       setProducts(productsArray);
+      console.log('Products: ', productsArray)
     };
     //
     getProducts().catch(e => {});
-  }, [productsUpdated, userId]);
+  }, [productsUpdated, userId, productDeleted]);
 
+  // ----------------
+  const deleteHandler = (key:string):void =>{
+  
+    deleteDoc(doc(db, `users/${userId as string}/products`, key)).then(result => {
+      setProductDeleted(key);
+      console.log('Product Deleted: ', key);
+      Notify.Show.success('Product Deleted!');
+  
+    }).catch(e=>{console.log('Failed to delete product!',e)});
+  }
   // -----
   return (
     <Wrapper>
@@ -52,20 +64,21 @@ function UserProducts({ productsUpdated }: {productsUpdated: number}): JSX.Eleme
           <Loading />
         </LoadingWrapper>
       ) : (
-        <ProductsList prop={products} />
+        <ProductsList products={products} deleteHandler={deleteHandler}/>
       )}
+      <Notify.Layout />
     </Wrapper>
   );
 }
+
 // -------------------
-const ProductsList = ({ prop }:{ prop:Product[] }): JSX.Element => {
-  const products = prop;
+const ProductsList = ({ products, deleteHandler }:{ products:Product[], deleteHandler:Function }): JSX.Element => {
   if (products.length > 0) {
     return (
       <List>
         {products.map(pr => (
           <Item key={pr.key}>
-            <DeleteWrapper title='Remove Product'>
+            <DeleteWrapper title='Remove Product' onClick={()=> deleteHandler(pr.key)}>
               <Trash size={32} color={'#FB2E86'} />
             </DeleteWrapper>
             <ProductWrapper>

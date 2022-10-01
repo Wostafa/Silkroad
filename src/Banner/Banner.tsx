@@ -23,7 +23,9 @@ function Banner(): JSX.Element {
           <Circle1 />
           <Circle2 />
         </Background>
-        <ImageProduct src="./template/sofa.png" alt="sofa" />
+        <ImageProductWrapper>
+          <ImageProduct src="./template/sofa.png" alt="sofa" />
+        </ImageProductWrapper>
       </ProductWrapper>
       <SaleTagWrapper>
         <SaleTag>50% off</SaleTag>
@@ -76,7 +78,12 @@ const ProductWrapper = styled.div`
   position: relative;
 `;
 const ImageProduct = styled.img`
+  width: 100%;
+  display:block;
+`;
+const ImageProductWrapper = styled.div`
   width: 400px;
+  height:400px;
   position: relative;
 `;
 const Background = styled.div`
