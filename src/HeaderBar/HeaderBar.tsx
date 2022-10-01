@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import { ShoppingBag, User as UserIcon, LogIn, LogOut } from 'react-feather';
 import { WrapperCentered, UnstyledButton, VisuallyHidden } from '../StyledElements';
-import { SignIn, UserCredential, auth, onUserStateChanged, User } from '../Firebase/Authentication';
+import { SignIn } from '../Firebase/Authentication';
+import {getAuth, UserCredential, onAuthStateChanged, User } from 'firebase/auth'
 
 function Header(): JSX.Element {
   const [userSignedIn, setUserSignIn] = useState<User | false>(false);
-
+  // --------------------
   const SignInHandler = (): void => {
     SignIn()
       .then((result: UserCredential) => {
@@ -18,9 +19,9 @@ function Header(): JSX.Element {
         alert('Signing in failed, please try again');
       });
   };
-
+  // ---------------------
   const SignOutHandler = (): void => {
-    auth
+    getAuth()
       .signOut()
       .then(result => {
         alert('You logged out successfully');
@@ -30,6 +31,22 @@ function Header(): JSX.Element {
       });
   };
 
+  // ----------------
+  useEffect(() => {
+    console.log('render HeaderBar');
+    const unSubscribe = onAuthStateChanged(getAuth(), user => {
+      if (user !== null) {
+        setUserSignIn(user);
+        console.log('user state changed: Signed In');
+      } else {
+        setUserSignIn(false);
+        console.log('user state changed: Signed Out');
+      }
+    });
+    return () => unSubscribe();
+  }, []);
+
+  // -------------------
   const LoggedInOut = (): JSX.Element => {
     if (userSignedIn !== false)
       return (
@@ -54,20 +71,7 @@ function Header(): JSX.Element {
         </ButtonLogIn>
       );
   };
-
-  useEffect(() => {
-    console.log('render');
-    onUserStateChanged(auth, user => {
-      if (user !== null) {
-        setUserSignIn(user);
-        console.log('im in', user);
-      } else {
-        setUserSignIn(false);
-        console.log('im out', user);
-      }
-    });
-  }, []);
-
+  // ------ 
   return (
     <Wrapper>
       <WrapperCentered>
@@ -85,8 +89,10 @@ function Header(): JSX.Element {
     </Wrapper>
   );
 }
+
+// ------------------
 const Button = styled(UnstyledButton)`
-  display:flex;
+  display: flex;
   align-items: center;
   &:hover {
     opacity: 0.8;

@@ -1,4 +1,6 @@
-import styled from "styled-components/macro";
+import React from 'react';
+import styled, {keyframes} from "styled-components/macro";
+import { Loader } from 'react-feather';
 
 export const WrapperCentered = styled.div`
   padding-left: var(--gutter);
@@ -72,11 +74,26 @@ export const LinkButton = styled.a`
   }
 `
 
-
 export const Spacer = styled.div`
   height:${(props: {size: number}) => props.size}px;
   min-height:${(props: {size: number}) => props.size}px;
   width: 100%;
   min-width:100%;
 `
+// -----
+const effectLoader = keyframes`
+  from {
+    transform:rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
+const Loader_ = styled(Loader)`
+animation: ${effectLoader} 2s linear infinite;
+`;
+export const Loading = ():JSX.Element =>{
+
+  return <Loader_ size={32} color='#FB2E86'/>
+}
 

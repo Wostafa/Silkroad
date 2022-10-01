@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { Button } from '../StyledElements';
+import { Button, Loading } from '../StyledElements';
 import { Upload } from '../Firebase/Storage';
+// ---------------
+interface Props {
+  setProductsUpdated: React.Dispatch<React.SetStateAction<number>>
+}
 
-function AddProduct(): JSX.Element {
+function AddProduct(props: Props): JSX.Element {
+  // -----------------
   interface FormData {
     name: string;
     price: number;
@@ -18,40 +23,40 @@ function AddProduct(): JSX.Element {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
-  // const {data, setData} = useState("");
-  // const [ image, setImage ] = useState<File>();
-  const [image, setImage] = useState('./assets/placeholder-upload.svg');
 
+  // ----------------- set preview of uploaded image
+  const [image, setImage] = useState('./assets/placeholder-upload.svg');
+  const [adding, setAdding] = useState(false); 
   const onChooseImage = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    // setImage(e.currentTarget.files?.[0]);
-    // setImage(e.target?.files?.[0]);
     const img = URL.createObjectURL(e.target.files?.[0] as Blob);
     setImage(img);
-    // const reader = new FileReader();
-    // reader.readAsDataURL(e.target?.files?.[0])
   };
-
+  // ----------------- send product to firebase
+  const [isUpdated, setIsUpdated] = useState(false);
   const onSubmit: SubmitHandler<FormData> = data => {
+    setAdding(true);
     const json = JSON.stringify(data);
     console.log(json);
     Upload(data)
       .then(result => {
+        setAdding(false);
         setIsUpdated(true);
+        props.setProductsUpdated(Date.now());
         console.log('Product Added: ', result);
       })
       .catch(e => {
+        setAdding(false);
         console.log('Product Adding Failed: ', e);
       });
   };
 
-  const [isUpdated, setIsUpdated] = useState(false);
+
 
   // (ignore prettier is for eslint comment inside jsx)
   // prettier-ignore
   return (
     <WrapperForm>
-      <h2>Add your Product</h2>
-      <h3>{isUpdated && 'Products have been updated!'}</h3>
+      <h2>Add new product</h2>
       {
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
       }<Form onSubmit={handleSubmit(onSubmit)}>
@@ -86,12 +91,18 @@ function AddProduct(): JSX.Element {
           </ChooseFileWrapperInner>
           {errors.image != null && <InputError>Image is required</InputError>}
         </ChooseFileWrapper>
-        <ButtonSubmit>Add</ButtonSubmit>
+        {adding ? (
+          <Loading />
+        ):(
+          <ButtonSubmit>Add</ButtonSubmit>
+        )
+        }
+        <MessageAdded>{isUpdated && 'Your product added!'}</MessageAdded>
       </Form>
     </WrapperForm>
   );
 }
-
+// ---------------------------
 const WrapperForm = styled.div`
   h2 {
     color: var(--color-off-blue);
@@ -181,5 +192,8 @@ const Image = styled.img`
   object-fit: cover;
   border-radius: var(--image-radius);
 `;
+const MessageAdded = styled.h3`
+  color: var(--color-message-success);
+`
 
 export default AddProduct;

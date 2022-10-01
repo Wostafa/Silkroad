@@ -17,8 +17,8 @@ export async function Upload(data: FormData): Promise<string> {
 
   const imageFile = data.image['0'];
   const fileType = imageFile.name.split('.').pop();
-  const fileName = nanoid();
-  const storageRef = ref(storage, `products/${data.category}/${fileName}.${fileType ?? 'unknown'}`);
+  const randomKey = nanoid(12);
+  const storageRef = ref(storage, `products/${data.category}/${randomKey}.${fileType ?? 'unknown'}`);
 
   return await new Promise<string>((resolve, reject) => {
     uploadBytes(storageRef, imageFile).then((snapshot) => {
@@ -29,13 +29,13 @@ export async function Upload(data: FormData): Promise<string> {
 
         addData({
           ...data,
-          key: nanoid(8),
+          key: randomKey,
           image: url,
         }).then(result => {
-          console.log('Data added to Database: ', result);
-          resolve('Upload & Download URL & Add to Database OK');
+          console.log('Data added to Database');
+          resolve('Upload & Download URL & Add to Database Finished');
         }).catch(e => {
-          console.log('Fail to add to database ', e);
+          console.log('Fail to add to Database ', e);
         })
 
       }).catch((e) => {

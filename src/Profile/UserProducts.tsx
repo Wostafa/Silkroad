@@ -1,66 +1,101 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/macro';
 import { Trash } from 'react-feather';
-import {UnstyledButton} from '../StyledElements';
+import { UnstyledButton, Loading } from '../StyledElements';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../Firebase/Database';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { Product } from '../Constants';
 
-interface Product {
-  key: string;
-  name: string;
-  price: number;
-  category: string;
-  image: string;
-  description: string;
-}
+// ----------------
+function UserProducts({ productsUpdated }: {productsUpdated: number}): JSX.Element {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [userId, setUserId] = useState<string | false >(false);
 
-function UserProducts(): JSX.Element {
-  // const [productsUpdated, setProductsUpdated] = useState(false);
-  const products = getProducts();
-  // products = []
+  // --------
+  useEffect(()=>{
+    const Unsubscribe = onAuthStateChanged(getAuth(), user => {
+      if (user !== null) {
+        setUserId(user.uid);
+      }
+    });
+    return ()=> Unsubscribe()
+  },[])
 
+  // ---------
+  useEffect(() => {
+    if(userId === false) return;
+    console.log('Loading user products...');
+    setIsLoading(true);
+
+    const getProducts = async (): Promise<void> => {
+      const querySnapshot = await getDocs(collection(db, `users/${userId}/products`));
+      const productsArray: Product[] = [];
+      querySnapshot.forEach(doc => {
+        productsArray.push(doc.data() as Product);
+      });
+
+      setIsLoading(false);
+      setProducts(productsArray);
+    };
+    //
+    getProducts().catch(e => {});
+  }, [productsUpdated, userId]);
+
+  // -----
   return (
     <Wrapper>
-        <h3>Your Products</h3>
-        {products.length > 0 ? (
-            <List>
-              {products.map(pr => (
-                <Item key={pr.key}>
-                  <DeleteWrapper title='Remove Product'><Trash size={32} color={'#FB2E86'}/></DeleteWrapper>
-                  <ProductWrapper>
-                    <DetailsWrapper>
-                      <Name href='#'><h3>{pr.name}</h3></Name>
-                      <PriceAndCategory><span>Category: </span>{pr.category}</PriceAndCategory>
-                      <PriceAndCategory><span>Price: </span>{pr.price}$</PriceAndCategory>
-                      <p>{pr.description}</p>
-                    </DetailsWrapper>
-                    <ImageWrapper>
-                      <img src={pr.image} />
-                    </ImageWrapper>
-                  </ProductWrapper>
-                </Item>
-              ))}
-            </List>
-          
-        ) : (
-          <NoProduct>You have no product</NoProduct>
-        )}
+      <h3>Your Products</h3>
+      {isLoading ? (
+        <LoadingWrapper>
+          <Loading />
+        </LoadingWrapper>
+      ) : (
+        <ProductsList prop={products} />
+      )}
     </Wrapper>
   );
 }
+// -------------------
+const ProductsList = ({ prop }:{ prop:Product[] }): JSX.Element => {
+  const products = prop;
+  if (products.length > 0) {
+    return (
+      <List>
+        {products.map(pr => (
+          <Item key={pr.key}>
+            <DeleteWrapper title='Remove Product'>
+              <Trash size={32} color={'#FB2E86'} />
+            </DeleteWrapper>
+            <ProductWrapper>
+              <DetailsWrapper>
+                <Name href='#'>
+                  <h3>{pr.name}</h3>
+                </Name>
+                <PriceAndCategory>
+                  <span>Category: </span>
+                  {pr.category}
+                </PriceAndCategory>
+                <PriceAndCategory>
+                  <span>Price: </span>
+                  {pr.price}$
+                </PriceAndCategory>
+                <p>{pr.description}</p>
+              </DetailsWrapper>
+              <ImageWrapper>
+                <img src={pr.image} />
+              </ImageWrapper>
+            </ProductWrapper>
+          </Item>
+        ))}
+      </List>
+    );
+  }
+  return <NoProduct>You have no product</NoProduct>;
+};
 
-function getProducts(): Product[] {
-  return [
-    {
-      key: 'key',
-      name: 'Name',
-      price: 105,
-      category: 'Chair',
-      image: '../../template/sofa.png',
-      description:
-        'The cat is a domestic species of small carnivorous mammal. It is the only domesticated species in the family Felidae and is often referred to as the domestic cat to distinguish it from the wild members of the family. The cat is a domestic species of small carnivorous mammal. It is the only domesticated species in the family Felidae and is often referred to as the domestic cat to distinguish it from the wild members of the family.',
-    },
-  ];
-}
-
+// -------------
 const Wrapper = styled.section`
   flex: 1;
   padding: 8px;
@@ -78,10 +113,12 @@ const Item = styled.li`
   background: white;
   padding: var(--box-text-padding);
   position: relative;
+  margin-bottom: 10px;
 `;
 const ProductWrapper = styled.div`
   display: flex;
   gap: 16px;
+  justify-content: space-between;
 `;
 const DetailsWrapper = styled.div`
   display: flex;
@@ -101,23 +138,25 @@ const ImageWrapper = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: var(--image-radius);
   }
 `;
 
 const NoProduct = styled.h3`
-  text-align:center;
+  text-align: center;
   color: var(--color-sub-text);
-`
+`;
 const Name = styled.a`
   width: fit-content;
   &:hover h3 {
     color: var(--color-link-hover);
   }
-`
+`;
 const PriceAndCategory = styled.h4`
   color: var(--color-sub-text-darker);
-  margin:0;
-`
+  margin: 0;
+  font-family: var(--font-family-lato);
+`;
 const DeleteWrapper = styled(UnstyledButton)`
   position: absolute;
   right: 10px;
@@ -127,11 +166,17 @@ const DeleteWrapper = styled(UnstyledButton)`
   padding: 5px 3px 0px 3px;
   border-radius: var(--button-radius);
   border: 1px solid var(--color-border-gray);
-  // background-color: var(--color-soft-gray);
+  background-color: white;
 
   &:hover {
     border-color: var(--color-border-gray-hover);
   }
-`
+`;
+
+const LoadingWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 export default UserProducts;

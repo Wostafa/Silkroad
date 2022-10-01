@@ -45,6 +45,7 @@ table {
 :root {
   --color-pink: #FB2E86;
   --color-red: #fb2347;
+  --color-message-success: #05bf3d;
   --color-blue: hsla(247, 77%, 44%, 1);
   --color-off-navy-blue: hsla(229, 43%, 43%, 1);
   --color-navy-blue: hsla(238, 70%, 27%, 1);
@@ -120,6 +121,15 @@ html ,body {
   box-sizing: border-box;
   line-height: 1.5;
 }
+
+p:first-letter,
+h1:first-letter,
+h2:first-letter,
+h3:first-letter,
+h4:first-letter {
+  text-transform: uppercase;
+}
+
 p {
   line-height: 1.5;
 }
