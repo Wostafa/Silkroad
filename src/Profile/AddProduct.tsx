@@ -36,8 +36,6 @@ function AddProduct(props: Props): JSX.Element {
   // ----------------- send product to firebase
   const onSubmit: SubmitHandler<FormData> = data => {
     setAdding(true);
-    const json = JSON.stringify(data);
-    console.log(json);
 
     Upload(data)
       .then(result => {
@@ -56,7 +54,7 @@ function AddProduct(props: Props): JSX.Element {
   // prettier-ignore
   return (
     <WrapperForm>
-      <h2>Add new product</h2>
+      <h3>Add new product</h3>
       {
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
       }<Form onSubmit={handleSubmit(onSubmit)}>
@@ -68,8 +66,12 @@ function AddProduct(props: Props): JSX.Element {
         <InputWrapper>
           <Label htmlFor="category" defaultValue='others'>Category:</Label>
           <Category id="category" {...register('category')}>
-            <option value="chair">Chair</option>
+            <option value="armchair">Armchair</option>
             <option value="clock">Clock</option>
+            <option value="chair">Chair</option>
+            <option value="pillow">Pillow</option>
+            <option value="plant-pot">Plant pot</option>
+            <option value="rug">Rug</option>
             <option value="others">Others</option>
           </Category>
         </InputWrapper>

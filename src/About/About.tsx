@@ -5,7 +5,6 @@ import {WrapperCentered} from '../StyledElements';
 function About(): JSX.Element {
   return(
     <WrapperCentered>
-      <H1>About us</H1>
       <p>
         SilkRoad is a Swedish multinational conglomerate based in the Netherlands that
         designs and sells ready-to-assemble furniture, kitchen appliances,
@@ -16,8 +15,5 @@ function About(): JSX.Element {
   )
 }
 
-const H1 = styled.h1`
-  color: var(--color-off-blue);
-`
 
 export default About;

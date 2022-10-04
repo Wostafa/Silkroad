@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/macro';
 import { Trash } from 'react-feather';
 import { UnstyledButton, Loading, Notify } from '../StyledElements';
-import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
+import { collection, doc, deleteDoc, getDocsFromServer } from 'firebase/firestore';
 import { db } from '../Firebase/Database';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Product } from '../Constants';
@@ -14,7 +14,7 @@ function UserProducts({ productsUpdated }: {productsUpdated: number}): JSX.Eleme
   const [userId, setUserId] = useState<string | false >(false);
   const [productDeleted, setProductDeleted] = useState<string>('');
 
-  // --------
+  // -------- listener on user state
   useEffect(()=>{
     const Unsubscribe = onAuthStateChanged(getAuth(), user => {
       if (user !== null) {
@@ -24,28 +24,31 @@ function UserProducts({ productsUpdated }: {productsUpdated: number}): JSX.Eleme
     return ()=> Unsubscribe()
   },[])
 
-  // ---------
+  // --------- loading products
   useEffect(() => {
     if(userId === false) return;
     console.log('Loading user products');
     setIsLoading(true);
 
     const getProducts = async (): Promise<void> => {
-      const querySnapshot = await getDocs(collection(db, `users/${userId}/products`));
-      const productsArray: Product[] = [];
-      querySnapshot.forEach(doc => {
-        productsArray.push(doc.data() as Product);
-      });
+        const querySnapshot = await getDocsFromServer(collection(db, `users/${userId}/products`))
 
-      setIsLoading(false);
-      setProducts(productsArray);
-      console.log('Products: ', productsArray)
+        const productsArray: Product[] = [];
+        querySnapshot.forEach(doc => {
+          productsArray.push(doc.data() as Product);
+        });
+        setIsLoading(false);
+        setProducts(productsArray);
+        console.log('Products: ', productsArray)
     };
     //
-    getProducts().catch(e => {});
+    getProducts().catch(e => {
+      setIsLoading(false);
+      Notify.Show.error("Can't load your products!");
+    });
   }, [productsUpdated, userId, productDeleted]);
 
-  // ----------------
+  // ---------------- delete product
   const deleteHandler = (key:string):void =>{
   
     deleteDoc(doc(db, `users/${userId as string}/products`, key)).then(result => {
@@ -94,7 +97,10 @@ const ProductsList = ({ products, deleteHandler }:{ products:Product[], deleteHa
                   <span>Price: </span>
                   {pr.price}$
                 </PriceAndCategory>
-                <p>{pr.description}</p>
+                {/* this div is for avoiding bug in flex box with a -webkit-line-clamp child style */}
+                <div>
+                  <Description>{pr.description}</Description>
+                </div>
               </DetailsWrapper>
               <ImageWrapper>
                 <img src={pr.image} />
@@ -169,6 +175,10 @@ const PriceAndCategory = styled.h4`
   color: var(--color-sub-text-darker);
   margin: 0;
   font-family: var(--font-family-lato);
+
+  span {
+    margin-right:8px;
+  }
 `;
 const DeleteWrapper = styled(UnstyledButton)`
   position: absolute;
@@ -191,5 +201,12 @@ const LoadingWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+const Description = styled.p`
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+`
 
 export default UserProducts;

@@ -12,6 +12,8 @@ import Contact from './Contact';
 import Profile from './Profile';
 import About from './About';
 import Shop from './Shop';
+import Product from './Product';
+import HeaderTitle from './HeaderTitle';
 
 function Layout():JSX.Element {
 
@@ -42,9 +44,17 @@ function Home():JSX.Element {
 function NotFound():JSX.Element{
   return(
     <WrapperCentered>
-      <h1>404</h1>
       <h2>Page Not Found</h2>
     </WrapperCentered>
+  )
+}
+
+function Page(content:JSX.Element, title:string): JSX.Element{
+  return (
+    <>
+      <HeaderTitle title={title}/>
+      {content}
+    </>
   )
 }
 
@@ -53,11 +63,12 @@ function App(): JSX.Element {
       <Routes>
         <Route path='/' element={<Layout/>}>
           <Route index element={<Home/>} />
-          <Route path='/shop' element={<Shop/>} />
-          <Route path='/contact' element={<Contact/>} />
-          <Route path='/about' element={<About/>} />
-          <Route path='/profile' element={<Profile/>} />
-          <Route path='*' element={<NotFound/>} />
+          <Route path='/product/:id' element={Page(<Product/>, 'Product Details')} />
+          <Route path='/shop' element={Page(<Shop/>, 'Shop')} />
+          <Route path='/contact' element={Page(<Contact/>, 'Contact Us')} />
+          <Route path='/about' element={Page(<About/>, 'About Us')} />
+          <Route path='/profile' element={Page(<Profile/>, 'My Account')} />
+          <Route path='*' element={Page(<NotFound/>, '404')} />
         </Route>
       </Routes>
   );

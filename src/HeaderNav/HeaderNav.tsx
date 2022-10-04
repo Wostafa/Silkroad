@@ -3,7 +3,8 @@ import styled from 'styled-components/macro';
 import { WrapperCentered, UnstyledButton } from '../StyledElements';
 import { WebsiteTitle } from '../Constants';
 import { Search } from 'react-feather';
-import { Link } from 'react-router-dom';
+import { Link} from 'react-router-dom';
+
 
 function Header(): JSX.Element {
   return (
@@ -40,7 +41,6 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid var(--color-border-gray);
 `;
 // const WrapperInner = styled.div`
 //   height: 40px;

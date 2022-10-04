@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-import { LinkButton } from '../StyledElements';
-
+import { Button } from '../StyledElements';
+import {Link} from 'react-router-dom'
+;
 function Banner(): JSX.Element {
   return (
     <Wrapper>
@@ -15,7 +16,9 @@ function Banner(): JSX.Element {
           chairs. With over 1000 fabric and leather options
         </Description>
         <ButtonWrapper>
-          <ButtonShop href={'#'}>Shop Now</ButtonShop>
+          <Link to="/product/54">
+            <Button>Shop Now</Button>
+          </Link>
         </ButtonWrapper>
       </TextWrapper>
       <ProductWrapper>
@@ -108,7 +111,7 @@ const Circle2 = styled(Circle)`
   bottom: 0;
   left: 0;
 `;
-const ButtonShop = styled(LinkButton)``;
+
 const ButtonWrapper = styled.div`
   margin-top: 50px;
 `;
