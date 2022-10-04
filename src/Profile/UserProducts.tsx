@@ -167,6 +167,7 @@ const NoProduct = styled.h3`
 `;
 const Name = styled.a`
   width: fit-content;
+  color: var(--color-product-name);
   &:hover h3 {
     color: var(--color-link-hover);
   }

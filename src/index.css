@@ -68,6 +68,7 @@ table {
   --color-title-header-background: #F6F5FF;
   --color-title-header-foreground: #101750;
   --color-border-gray: #e9e9e9;
+  --color-product-name: #0D134E;
   --color-border-gray-hover: #aaaaaa;
   --color-product-background: #F6F7FB;
   --color-product-background-hover: #2F1AC4;
@@ -101,11 +102,7 @@ table {
 
   --margin-row: 32px;
 
-  --shadow-box:   0px 0px 2.7px rgba(0, 0, 0, 0.006),
-    0px 0px 6.8px rgba(0, 0, 0, 0.009),
-    0px 0px 13.8px rgba(0, 0, 0, 0.011),
-    0px 0px 28.5px rgba(0, 0, 0, 0.014),
-    0px 0px 78px rgba(0, 0, 0, 0.02);
+  --shadow-box: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;  
 
 }
 html ,body {

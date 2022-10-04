@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-import {WrapperCentered} from '../StyledElements';
+import {WrapperCentered, Spacer} from '../StyledElements';
 
 function Contact(): JSX.Element {
   return(
@@ -11,6 +11,7 @@ function Contact(): JSX.Element {
         Tel: 877-67-88-99<br/>
         Email: Silkroad@store.com
       </p>
+      <Spacer size={32} />
     </WrapperCentered>
   )
 }

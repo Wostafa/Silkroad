@@ -1,8 +1,9 @@
 import React from 'react';
-import { WrapperCentered } from '../StyledElements';
+import { WrapperCentered, Spacer } from '../StyledElements';
 function Shop(): JSX.Element {
   return(
     <WrapperCentered>
+      <Spacer size={32} />
     </WrapperCentered>
   )
 }
