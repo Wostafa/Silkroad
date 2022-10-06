@@ -68,7 +68,7 @@ table {
   --color-title-header-background: #F6F5FF;
   --color-title-header-foreground: #101750;
   --color-border-gray: #e9e9e9;
-  --color-product-name: #0D134E;
+  --color-product-name: #2d3bc5;
   --color-border-gray-hover: #aaaaaa;
   --color-product-background: #F6F7FB;
   --color-product-background-hover: #2F1AC4;
@@ -146,6 +146,7 @@ h3 {
 a {
   text-decoration: none;
   color:inherit;
+  cursor: pointer;
 }
 b {
   font-weight: bold;

@@ -1,11 +1,35 @@
-import React from 'react';
+import React, {useState} from 'react';
+import styled from 'styled-components/macro';
 import { WrapperCentered, Spacer } from '../StyledElements';
+import Product from './Products'
+import Sidebar from './Sidebar'
+//
+
+export interface FiltersState {
+  categories: {[key: string]: boolean};
+  priceRange: [number,number] | [];
+}
+
 function Shop(): JSX.Element {
-  return(
+
+  const [filters, setFilters] = useState<FiltersState>({categories:{}, priceRange:[]})
+  // ----
+  return (
     <WrapperCentered>
       <Spacer size={32} />
+      <Wrapper>
+        <Sidebar setFilters={setFilters} filters={filters}/>
+        <Product filters={filters} />
+      </Wrapper>
+      <Spacer size={32} />
     </WrapperCentered>
-  )
+  );
 }
+// -----
+const Wrapper = styled.div`
+  display:flex;
+  gap: 16px;
+`;
+
 
 export default Shop;

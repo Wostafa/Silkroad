@@ -50,7 +50,7 @@ function ProductGridLatest(): JSX.Element {
                     <Image src={pr.image} alt='' />
                   </ImageWrapper>
                   <Name>{pr.name}</Name>
-                  <Price>{pr.price}$</Price>
+                  <Price>${pr.price}</Price>
                 </Link>
               ))}
             </WrapperGrid>

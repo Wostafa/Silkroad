@@ -74,7 +74,7 @@ function ProductElement({ product }: { product: ProductType | undefined }): JSX.
       <DetailsWrapper>
         <Name>{product.name}</Name>
         <Category>{product.category}</Category>
-        <Price>{product.price}$</Price>
+        <Price>${product.price}</Price>
         <Description>{product.description}</Description>
         <ButtonBuy>Buy Now</ButtonBuy>
       </DetailsWrapper>

@@ -16,7 +16,7 @@ function Banner(): JSX.Element {
           chairs. With over 1000 fabric and leather options
         </Description>
         <ButtonWrapper>
-          <Link to="/product/54">
+          <Link to="/shop">
             <Button>Shop Now</Button>
           </Link>
         </ButtonWrapper>

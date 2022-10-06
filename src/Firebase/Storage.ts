@@ -46,8 +46,6 @@ export async function Upload(data: FormData): Promise<string> {
       console.log('Fail to upload ', e)
       reject(new Error('Upload or Download URL Failed'))
     });
-
-
   });
 }
 
