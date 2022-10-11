@@ -4,60 +4,53 @@ import { Trash } from 'react-feather';
 import { UnstyledButton, Loading, Notify } from '../StyledElements';
 import { collection, doc, deleteDoc, getDocsFromServer } from 'firebase/firestore';
 import { db } from '../Firebase/Database';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Product } from '../Constants';
+import { selectUser } from '../Redux/UserSlice';
+import { useAppSelector } from '../Redux/Hooks';
 
 // ----------------
-function UserProducts({ productsUpdated }: {productsUpdated: number}): JSX.Element {
+function UserProducts({ productsUpdated }: { productsUpdated: number }): JSX.Element {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [userId, setUserId] = useState<string | false >(false);
+  const user = useAppSelector(selectUser);
   const [productDeleted, setProductDeleted] = useState<string>('');
-
-  // -------- listener on user state
-  useEffect(()=>{
-    const Unsubscribe = onAuthStateChanged(getAuth(), user => {
-      if (user !== null) {
-        setUserId(user.uid);
-      }
-    });
-    return ()=> Unsubscribe()
-  },[])
 
   // --------- loading products
   useEffect(() => {
-    if(userId === false) return;
+    if (user === null) return;
     console.log('Loading user products');
     setIsLoading(true);
 
     const getProducts = async (): Promise<void> => {
-        const querySnapshot = await getDocsFromServer(collection(db, `users/${userId}/products`))
+      const querySnapshot = await getDocsFromServer(collection(db, `users/${user.uid}/products`));
 
-        const productsArray: Product[] = [];
-        querySnapshot.forEach(doc => {
-          productsArray.push(doc.data() as Product);
-        });
-        setIsLoading(false);
-        setProducts(productsArray);
-        console.log('Products: ', productsArray)
+      const productsArray: Product[] = [];
+      querySnapshot.forEach(doc => {
+        productsArray.push(doc.data() as Product);
+      });
+      setIsLoading(false);
+      setProducts(productsArray);
+      console.log('Products: ', productsArray);
     };
     //
     getProducts().catch(e => {
       setIsLoading(false);
       Notify.Show.error("Can't load your products!");
     });
-  }, [productsUpdated, userId, productDeleted]);
+  }, [productsUpdated, user, productDeleted]);
 
   // ---------------- delete product
-  const deleteHandler = (key:string):void =>{
-  
-    deleteDoc(doc(db, `users/${userId as string}/products`, key)).then(result => {
-      setProductDeleted(key);
-      console.log('Product Deleted: ', key);
-      Notify.Show.success('Product Deleted!');
-  
-    }).catch(e=>{console.log('Failed to delete product!',e)});
-  }
+  const deleteHandler = (key: string): void => {
+    deleteDoc(doc(db, `users/${user?.uid as string}/products`, key))
+      .then(result => {
+        setProductDeleted(key);
+        console.log('Product Deleted: ', key);
+        Notify.Show.success('Product Deleted!');
+      })
+      .catch(e => {
+        console.log('Failed to delete product!', e);
+      });
+  };
   // -----
   return (
     <Wrapper>
@@ -67,7 +60,7 @@ function UserProducts({ productsUpdated }: {productsUpdated: number}): JSX.Eleme
           <Loading />
         </LoadingWrapper>
       ) : (
-        <ProductsList products={products} deleteHandler={deleteHandler}/>
+        <ProductsList products={products} deleteHandler={deleteHandler} />
       )}
       <Notify.Layout />
     </Wrapper>
@@ -75,13 +68,13 @@ function UserProducts({ productsUpdated }: {productsUpdated: number}): JSX.Eleme
 }
 
 // -------------------
-const ProductsList = ({ products, deleteHandler }:{ products:Product[], deleteHandler:Function }): JSX.Element => {
+const ProductsList = ({ products, deleteHandler }: { products: Product[]; deleteHandler: Function }): JSX.Element => {
   if (products.length > 0) {
     return (
       <List>
         {products.map(pr => (
           <Item key={pr.key}>
-            <DeleteWrapper title='Remove Product' onClick={()=> deleteHandler(pr.key)}>
+            <DeleteWrapper title='Remove Product' onClick={() => deleteHandler(pr.key)}>
               <Trash size={32} color={'#FB2E86'} />
             </DeleteWrapper>
             <ProductWrapper>
@@ -178,7 +171,7 @@ const PriceAndCategory = styled.h4`
   font-family: var(--font-family-lato);
 
   span {
-    margin-right:8px;
+    margin-right: 8px;
   }
 `;
 const DeleteWrapper = styled(UnstyledButton)`
@@ -208,6 +201,6 @@ const Description = styled.p`
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 4;
-`
+`;
 
 export default UserProducts;

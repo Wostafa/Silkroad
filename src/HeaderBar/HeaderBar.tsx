@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import { ShoppingBag, User as UserIcon, LogIn, LogOut } from 'react-feather';
 import { WrapperCentered, UnstyledButton, VisuallyHidden } from '../StyledElements';
 import { SignIn } from '../Firebase/Authentication';
-import {getAuth, UserCredential, onAuthStateChanged, User } from 'firebase/auth'
+import { getAuth, UserCredential, onAuthStateChanged } from 'firebase/auth';
+import { useAppSelector, useAppDispatch } from '../Redux/Hooks';
+import { addCurrentUser, selectUser } from '../Redux/UserSlice';
 
 function Header(): JSX.Element {
-  const [userSignedIn, setUserSignIn] = useState<User | false>(false);
+  const user = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
   // --------------------
   const SignInHandler = (): void => {
     SignIn()
@@ -36,10 +39,10 @@ function Header(): JSX.Element {
     console.log('render HeaderBar');
     const unSubscribe = onAuthStateChanged(getAuth(), user => {
       if (user !== null) {
-        setUserSignIn(user);
+        dispatch(addCurrentUser({ displayName: user.displayName, uid: user.uid }));
         console.log('user state changed: Signed In');
       } else {
-        setUserSignIn(false);
+        dispatch(addCurrentUser(null));
         console.log('user state changed: Signed Out');
       }
     });
@@ -48,12 +51,12 @@ function Header(): JSX.Element {
 
   // -------------------
   const LoggedInOut = (): JSX.Element => {
-    if (userSignedIn !== false)
+    if (user !== null)
       return (
         <LoggedInOutWrapper>
           <ButtonProfile>
             <Link to='/profile' title='Profile'>
-              <span>{userSignedIn.displayName}</span>
+              <span>{user.displayName}</span>
               <UserIcon size={24} />
             </Link>
           </ButtonProfile>
@@ -71,7 +74,7 @@ function Header(): JSX.Element {
         </ButtonLogIn>
       );
   };
-  // ------ 
+  // ------
   return (
     <Wrapper>
       <WrapperCentered>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/macro';
 import { WrapperCentered, Spacer } from '../StyledElements';
 import { useNavigate } from 'react-router-dom';
-import {getAuth, onAuthStateChanged } from 'firebase/auth'
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import UserProducts from './UserProducts';
 import AddProduct from './AddProduct';
 
@@ -23,7 +23,7 @@ function Profile(): JSX.Element {
     <WrapperCentered>
       <Wrapper>
         <AddProduct setProductsUpdated={setProductsUpdated} />
-        <UserProducts productsUpdated={productsUpdated}/>
+        <UserProducts productsUpdated={productsUpdated} />
       </Wrapper>
       <Spacer size={32} />
     </WrapperCentered>
