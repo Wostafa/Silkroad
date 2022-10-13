@@ -16,6 +16,24 @@ import Cart from './Cart'
 import Product from './Product';
 import HeaderTitle from './HeaderTitle';
 
+export default function App(): JSX.Element {
+  return (
+      <Routes>
+        <Route path='/' element={<Layout/>}>
+          <Route index element={<Home/>} />
+          <Route path='/product/:id' element={Page(<Product/>, 'Product Details')} />
+          <Route path='/shop' element={Page(<Shop/>, 'Shop')} />
+          <Route path='/contact' element={Page(<Contact/>, 'Contact Us')} />
+          <Route path='/about' element={Page(<About/>, 'About Us')} />
+          <Route path='/profile' element={Page(<Profile/>, 'My Account')} />
+          <Route path='/cart' element={Page(<Cart/>, 'Shopping Cart')} />
+          <Route path='*' element={Page(<NotFound/>, '404')} />
+        </Route>
+      </Routes>
+  );
+}
+
+// -------------
 function Layout():JSX.Element {
 
   return(
@@ -59,23 +77,7 @@ function Page(content:JSX.Element, title:string): JSX.Element{
   )
 }
 
-function App(): JSX.Element {
-  return (
-      <Routes>
-        <Route path='/' element={<Layout/>}>
-          <Route index element={<Home/>} />
-          <Route path='/product/:id' element={Page(<Product/>, 'Product Details')} />
-          <Route path='/shop' element={Page(<Shop/>, 'Shop')} />
-          <Route path='/contact' element={Page(<Contact/>, 'Contact Us')} />
-          <Route path='/about' element={Page(<About/>, 'About Us')} />
-          <Route path='/profile' element={Page(<Profile/>, 'My Account')} />
-          <Route path='/cart' element={Page(<Cart/>, 'Shopping Cart')} />
-          <Route path='*' element={Page(<NotFound/>, '404')} />
-        </Route>
-      </Routes>
-  );
-}
-
+// ------------
 const Wrapper = styled.div`
   display:flex;
   flex-direction:column;
@@ -89,5 +91,3 @@ const Header = styled.header`
   width: 100%;
 `;
 
-
-export default App;
