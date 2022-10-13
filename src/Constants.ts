@@ -9,4 +9,5 @@ export interface Product {
   image: string;
   description: string;
 }
+
 export const Categories = ['armchair','clock','chair','pillow','plant-pot','rug','others'];

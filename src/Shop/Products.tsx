@@ -25,7 +25,7 @@ function Products({ filters }: {filters:FiltersState}): JSX.Element {
 
     const colRef = collectionGroup(db, 'products');
     let categoryQuery: Query<DocumentData>;
-    // if none of checkboxes are checked, get all
+    // if none of checkboxes are checked, get all (default)
     if (checkedCategories.length === 0) {
       categoryQuery = colRef;
     } else {

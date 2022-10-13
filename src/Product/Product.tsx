@@ -1,25 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, MouseEventHandler } from 'react';
 import styled from 'styled-components/macro';
 import { WrapperCentered, Spacer, Button, Loading, Notify } from '../StyledElements';
 import { useParams, useLocation } from 'react-router-dom';
 import { Product as ProductType } from '../Constants';
 import { getDocs, collectionGroup } from 'firebase/firestore';
 import { db } from '../Firebase/Database';
+import { addProduct } from '../Redux/CartSlice';
+import { selectUser } from '../Redux/UserSlice';
+import { useAppDispatch, useAppSelector } from '../Redux/Hooks';
 import 'react-toastify/dist/ReactToastify.css';
 
 function Product(): JSX.Element {
   const [product, setProduct] = useState<ProductType>();
   const [isLoading, setIsLoading] = useState(true);
+  const [isAdding, setIsAdding] = useState(false);
 
   const { id = '' } = useParams();
   const { state } = useLocation();
 
+  const user = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
+
+  // -----
+  const addToCartHandler: MouseEventHandler<HTMLButtonElement> = (): void => {
+    if (user === null) {
+      Notify.Show.error('You must login first!');
+      return;
+    }
+    const addToCart = async (): Promise<void> => {
+      setIsAdding(true);
+      try {
+        await dispatch(addProduct({ product: product as ProductType, userId: user.uid })).unwrap();
+        setIsAdding(false);
+        Notify.Show.success('Product added to cart!');
+      } catch (e) {
+        setIsAdding(false);
+        Notify.Show.error('Failed to add to cart!');
+        console.log('Failed to add to cart: ', e);
+      }
+    };
+    addToCart().catch(() => {});
+  };
+  // --------
   useEffect(() => {
     // if user comes here from router
     if (state !== null) {
       setProduct(state);
       setIsLoading(false);
-      console.log('Product result from router: ', state);
       return;
     }
     // if your comes here directly
@@ -30,7 +57,6 @@ function Product(): JSX.Element {
         if (doc !== undefined) {
           setIsLoading(false);
           setProduct(doc.data() as ProductType);
-          console.log('Product result from database: ', doc.data());
         } else {
           setIsLoading(false);
           Notify.Show.error('Product not found!');
@@ -54,7 +80,7 @@ function Product(): JSX.Element {
             <Loading />
           </LoadingWrapper>
         ) : (
-          <ProductElement product={product} />
+          <ProductElement product={product} handler={addToCartHandler} isAdding={isAdding} />
         )}
       </Wrapper>
       <Notify.Layout />
@@ -64,7 +90,15 @@ function Product(): JSX.Element {
 }
 
 // --------
-function ProductElement({ product }: { product: ProductType | undefined }): JSX.Element {
+function ProductElement({
+  product,
+  handler,
+  isAdding,
+}: {
+  product: ProductType | undefined;
+  handler: MouseEventHandler<HTMLButtonElement>;
+  isAdding: boolean;
+}): JSX.Element {
   if (product === undefined) return <></>;
   return (
     <>
@@ -76,7 +110,9 @@ function ProductElement({ product }: { product: ProductType | undefined }): JSX.
         <Category>{product.category}</Category>
         <Price>${product.price}</Price>
         <Description>{product.description}</Description>
-        <ButtonBuy>Buy Now</ButtonBuy>
+        <ButtonAddToCart onClick={handler} disabled={isAdding}>
+          Add to cart
+        </ButtonAddToCart>
       </DetailsWrapper>
     </>
   );
@@ -122,7 +158,7 @@ const Category = styled.h3`
 const Description = styled.p`
   margin-bottom: 32px;
 `;
-const ButtonBuy = styled(Button)`
+const ButtonAddToCart = styled(Button)`
   width: fit-content;
   padding-left: 20px;
   padding-right: 20px;

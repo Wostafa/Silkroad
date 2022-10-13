@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from './Store';
 
-type CurrentUserType = { displayName: string | null, uid: string } | null
+export type CurrentUserType = { displayName: string | null, uid: string } | null
 
 interface UserState {
   current: CurrentUserType
@@ -16,7 +16,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     addCurrentUser: (state, action: PayloadAction<CurrentUserType>) => {
-      state.current = action.payload;
+      state.current = action.payload
     }
   }
 })

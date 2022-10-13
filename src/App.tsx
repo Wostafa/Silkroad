@@ -12,6 +12,7 @@ import Contact from './Contact';
 import Profile from './Profile';
 import About from './About';
 import Shop from './Shop';
+import Cart from './Cart'
 import Product from './Product';
 import HeaderTitle from './HeaderTitle';
 
@@ -68,6 +69,7 @@ function App(): JSX.Element {
           <Route path='/contact' element={Page(<Contact/>, 'Contact Us')} />
           <Route path='/about' element={Page(<About/>, 'About Us')} />
           <Route path='/profile' element={Page(<Profile/>, 'My Account')} />
+          <Route path='/cart' element={Page(<Cart/>, 'Shopping Cart')} />
           <Route path='*' element={Page(<NotFound/>, '404')} />
         </Route>
       </Routes>

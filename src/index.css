@@ -68,10 +68,12 @@ table {
   --color-title-header-background: #F6F5FF;
   --color-title-header-foreground: #101750;
   --color-border-gray: #e9e9e9;
+  --color-border-gray-darker: #cbcbcb;
   --color-product-name: #2d3bc5;
   --color-border-gray-hover: #aaaaaa;
   --color-product-background: #F6F7FB;
   --color-product-background-hover: #2F1AC4;
+  --color-button-green: #19D16F;
   --gradient-skyBlue: linear-gradient(121.53deg, #F3F9FF 0%, #F1F0FF 100%);
 
   --font-family-josefin-sans: 'Josefin Sans', sans-serif;
@@ -162,6 +164,11 @@ input:focus, textarea:focus, a:focus {
   outline: 2px solid var(--color-outline);
   border-radius: var(--button-radius);
   outline-offset: 2px; 
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 body {

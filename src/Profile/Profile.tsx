@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/macro';
 import { WrapperCentered, Spacer } from '../StyledElements';
 import { useNavigate } from 'react-router-dom';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import UserProducts from './UserProducts';
 import AddProduct from './AddProduct';
+import { useAppSelector } from '../Redux/Hooks';
+import { selectUser } from '../Redux/UserSlice';
 
 function Profile(): JSX.Element {
-  const navigate = useNavigate();
   const [productsUpdated, setProductsUpdated] = useState<number>(0);
-  useEffect(() => {
-    console.log('render Profile');
-    const Unsubscribe = onAuthStateChanged(getAuth(), user => {
-      if (user === null) {
-        navigate('/');
-      }
-    });
-    return () => Unsubscribe();
-  }, []);
+
+  const user = useAppSelector(selectUser);
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    if (user === null) {
+      navigate('/');
+    }
+  }, [user])
 
   return (
     <WrapperCentered>
