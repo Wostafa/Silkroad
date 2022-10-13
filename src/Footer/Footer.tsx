@@ -1,18 +1,15 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 import { WebsiteTitle, CompanyAddress } from '../Constants';
-import { LinkButton } from '../StyledElements';
-// hi im here
+import Subscribe
+ from './Subscribe';
 function Footer(): JSX.Element {
   return (
     <Wrapper>
       <NavWrapper>
         <EmailWrapper>
           <h2>{WebsiteTitle}</h2>
-          <SignUpWrapper>
-            <SignUpInput type={'email'} placeholder={'Enter Email Address'}></SignUpInput>
-            <LinkButton>Sign Up</LinkButton>
-          </SignUpWrapper>
+          <Subscribe/>
           <Address>{CompanyAddress}</Address>
         </EmailWrapper>
         <LinksWrapper>
@@ -123,22 +120,6 @@ const EmailWrapper = styled.div`
   h2 {
     margin-top: 0;
   }
-`;
-
-const SignUpWrapper = styled.div`
-  display: flex;
-  gap: 5px;
-`;
-// const SignUpButton = styled.a`
-//   text-decoration:none;
-
-// `
-const SignUpInput = styled.input`
-  border: 2px solid var(--color-soft-gray);
-  font-size: 1rem;
-  padding: 0 8px;
-  color: var(--color-sub-text);
-  width: 300px;
 `;
 
 const Address = styled.div`

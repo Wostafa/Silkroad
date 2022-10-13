@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { RootState } from './Store';
 import { db } from '../Firebase/Database'
-import { doc, setDoc, getDocsFromServer, collection, deleteDoc, QuerySnapshot, DocumentData } from "firebase/firestore";
+import { doc, setDoc, getDocsFromServer, collection, deleteDoc } from "firebase/firestore";
 import type { Product } from '../Constants';
 
 interface CartState {
