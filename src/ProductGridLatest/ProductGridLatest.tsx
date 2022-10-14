@@ -105,7 +105,7 @@ const Image = styled.img`
   margin: 0 auto;
 `;
 
-const Name = styled.div`
+const Name = styled.h4`
   color: var(--color-name);
   font-family: var(--font-family-lato);
   font-weight: 700;

@@ -68,7 +68,7 @@ function Product(): JSX.Element {
         Notify.Show.error('Something went wrong!');
         console.log('Failed to get product: ', e);
       });
-  }, []);
+  }, [id]);
 
   // ----
   return (

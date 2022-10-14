@@ -138,7 +138,7 @@ const WrapperInner = styled.div`
 const WrapperNav = styled.div`
   display: flex;
   justify-content: center;
-  gap: 40px;
+  gap: 32px;
 `;
 const Offer = styled.div``;
 const ButtonWithText = styled(Button)`
