@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@reduxjs/toolkit': ^1.8.6
+  '@stripe/stripe-js': ^1.41.0
   '@testing-library/jest-dom': ^5.16.5
   '@testing-library/react': ^13.4.0
   '@testing-library/user-event': ^13.5.0
@@ -37,6 +38,7 @@ specifiers:
 
 dependencies:
   '@reduxjs/toolkit': 1.8.6_kuo2ie247izvzll3jejufdtq3q
+  '@stripe/stripe-js': 1.41.0
   '@testing-library/jest-dom': 5.16.5
   '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
   '@testing-library/user-event': 13.5.0_wl4iynrlixafokvgqnhzlvigei
@@ -2664,6 +2666,10 @@ packages:
     resolution: {integrity: sha512-OAPJUAtgeINhh/TAlUID4QTs53Njm7xzddaVlEs/SXwgtiD1tW22zAB/W1wdqfrpmikgaWQ9Fw6Ws+hsiRm5Vg==}
     dependencies:
       '@sinonjs/commons': 1.8.3
+    dev: false
+
+  /@stripe/stripe-js/1.41.0:
+    resolution: {integrity: sha512-9cbv1CO/fF37qDiHFCxkRgSJjlIZLV0bl+m6zu4dUObRnfYq5bpczCByOvhiSWtbrKqNhYL1j+otPSogRfSqGw==}
     dev: false
 
   /@surma/rollup-plugin-off-main-thread/2.2.3:

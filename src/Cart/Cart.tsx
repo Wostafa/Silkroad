@@ -1,25 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/macro';
-import { WrapperCentered, Spacer, Button, UnstyledButton } from '../StyledElements';
+import { WrapperCentered, Spacer, Button, UnstyledButton, Notify } from '../StyledElements';
 import { Trash } from 'react-feather';
 import { useAppSelector, useAppDispatch } from '../Redux/Hooks';
 import { selectCart, deleteProduct } from '../Redux/CartSlice';
 import { selectUser } from '../Redux/UserSlice';
 import { useNavigate } from 'react-router-dom';
+import { loadStripe, Stripe } from '@stripe/stripe-js';
+import { StripeConfig } from '../Constants';
 
 function Cart(): JSX.Element {
   const dispatch = useAppDispatch();
   const cart = useAppSelector(selectCart);
   const user = useAppSelector(selectUser);
   const navigate = useNavigate();
+  const [waitingForCheckout, setWaitingForCheckout] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [stripe, setStripe] = useState<Stripe | null>(null);
 
   // --- redirect to home
-  useEffect(()=>{
+  useEffect(() => {
     if (user === null) {
       navigate('/');
     }
-  },[user])
+  }, [user]);
 
   // --- delete from cart
   const deleteHandler = (key: string): void => {
@@ -29,6 +33,50 @@ function Cart(): JSX.Element {
       setIsDeleting(false);
     };
     deleteFromCart().catch(() => {});
+  };
+
+  // ------- Preparing Stripe
+  useEffect(() => {
+    (async () => {
+      const _stripe = await loadStripe(StripeConfig.PUB_KEY);
+      console.log('Stripe is loaded');
+      setStripe(_stripe);
+    })().catch(e => {
+      console.log('Failed to load Stripe: ', e);
+    });
+  }, []);
+
+  const onCheckout: React.MouseEventHandler<HTMLButtonElement> = (): void => {
+    if (stripe === null) return;
+    setWaitingForCheckout(true);
+    interface Order {
+      key: string;
+      quantity: number;
+    }
+    const orders: Order[] = [];
+    cart.forEach(pr => {
+      orders.push({
+        key: pr.key,
+        quantity: 1,
+      });
+    });
+    (async () => {
+      // getting session id from netlify
+      const response = await fetch(StripeConfig.CHECKOUT_ENDPOINT, {
+        method: 'POST',
+        body: JSON.stringify(orders),
+      });
+      const session = await response.json();
+      // redirecting to stripe payment page
+      const redirect = await stripe.redirectToCheckout({ sessionId: session.id });
+      if (redirect.error !== null) {
+        console.log('Redirect Error: ', redirect.error.message);
+      }
+    })().catch(e => {
+      Notify.Show.error('Checkout went wrong!');
+      console.log('Checkout Failed: ', e);
+      setWaitingForCheckout(false);
+    });
   };
 
   // ----
@@ -66,11 +114,14 @@ function Cart(): JSX.Element {
               <TotalH>Totals:</TotalH>
               <TotalH>${CalculateTotal()}</TotalH>
             </Total>
-            <CheckOutButton>Proceed To Checkout</CheckOutButton>
+            <CheckOutButton onClick={onCheckout} disabled={cart.length === 0 || waitingForCheckout}>
+              Proceed To Checkout
+            </CheckOutButton>
           </TotalBox>
         </TotalWrapper>
       </Wrapper>
       <Spacer size={32} />
+      <Notify.Layout/>
     </WrapperCentered>
   );
 }
