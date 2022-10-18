@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import ProductGridLatest from './ProductGridLatest';
 import styled from 'styled-components/macro';
@@ -15,6 +15,8 @@ import Shop from './Shop';
 import Cart from './Cart';
 import Product from './Product';
 import HeaderTitle from './HeaderTitle';
+import Success from './Cart/Success';
+import Cancel from './Cart/Cancel';
 
 export default function App(): JSX.Element {
   return (
@@ -27,6 +29,8 @@ export default function App(): JSX.Element {
         <Route path='/about' element={Page(<About />, 'About Us')} />
         <Route path='/profile' element={Page(<Profile />, 'My Account')} />
         <Route path='/cart' element={Page(<Cart />, 'Shopping Cart')} />
+        <Route path='/success' element={Page(<Success />, 'Order Result')} />
+        <Route path='/cancel' element={Page(<Cancel />, 'Order Result')} />
         <Route path='*' element={Page(<NotFound />, '404')} />
       </Route>
     </Routes>

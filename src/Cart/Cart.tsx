@@ -6,7 +6,7 @@ import { useAppSelector, useAppDispatch } from '../Redux/Hooks';
 import { selectCart, deleteProduct } from '../Redux/CartSlice';
 import { selectUser } from '../Redux/UserSlice';
 import { useNavigate } from 'react-router-dom';
-import { loadStripe, Stripe } from '@stripe/stripe-js';
+import useStripe from './Stripe';
 import { StripeConfig } from '../Constants';
 
 function Cart(): JSX.Element {
@@ -14,9 +14,9 @@ function Cart(): JSX.Element {
   const cart = useAppSelector(selectCart);
   const user = useAppSelector(selectUser);
   const navigate = useNavigate();
+  const stripe = useStripe();
   const [waitingForCheckout, setWaitingForCheckout] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [stripe, setStripe] = useState<Stripe | null>(null);
 
   // --- redirect to home
   useEffect(() => {
@@ -34,17 +34,6 @@ function Cart(): JSX.Element {
     };
     deleteFromCart().catch(() => {});
   };
-
-  // ------- Preparing Stripe
-  useEffect(() => {
-    (async () => {
-      const _stripe = await loadStripe(StripeConfig.PUB_KEY);
-      console.log('Stripe is loaded');
-      setStripe(_stripe);
-    })().catch(e => {
-      console.log('Failed to load Stripe: ', e);
-    });
-  }, []);
 
   const onCheckout: React.MouseEventHandler<HTMLButtonElement> = (): void => {
     if (stripe === null) return;
