@@ -1,20 +1,30 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
-import { ShoppingBag, User as UserIcon, LogIn, LogOut } from 'react-feather';
+import { ShoppingBag, User as UserIcon, LogIn, LogOut, Menu } from 'react-feather';
 import { WrapperCentered, UnstyledButton, VisuallyHidden } from '../StyledElements';
-import { SignIn } from '../Firebase/Authentication';
-import { getAuth, UserCredential, onAuthStateChanged } from 'firebase/auth';
 import { useAppSelector, useAppDispatch } from '../Redux/Hooks';
-import { addCurrentUser, selectUser } from '../Redux/UserSlice';
+import { selectUser } from '../Redux/UserSlice';
 import { fetchCart, selectCart } from '../Redux/CartSlice';
+import { QUERIES } from '../Constants';
+import MobileMenu from './MobileMenu';
+import * as Auth from './Auth';
 
 function Header(): JSX.Element {
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const cart = useAppSelector(selectCart);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  Auth.useFirebaseAuth();
+
   // ------------------
+
+  const onMenuButton = (): void => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  // ----
   const cartHandler = (): void => {
     if (user == null) {
       alert('You must login to manage your cart');
@@ -31,44 +41,6 @@ function Header(): JSX.Element {
     _fetchCart().catch(() => {});
   }, [user]);
 
-  // ---- sign in and out
-  const SignInHandler = (): void => {
-    SignIn()
-      .then((result: UserCredential) => {
-        console.log('User logged in', result.user);
-      })
-      .catch(e => {
-        console.log('User login failed', e.message);
-        alert('Signing in failed, please try again');
-      });
-  };
-  //
-  const SignOutHandler = (): void => {
-    getAuth()
-      .signOut()
-      .then(result => {
-        alert('You logged out successfully');
-      })
-      .catch(e => {
-        alert('Logging out failed, please try again');
-      });
-  };
-
-  // ----------------
-  useEffect(() => {
-    console.log('render HeaderBar');
-    const unSubscribe = onAuthStateChanged(getAuth(), user => {
-      if (user !== null) {
-        dispatch(addCurrentUser({ displayName: user.displayName, uid: user.uid }));
-        console.log('user state changed: Signed In');
-      } else {
-        dispatch(addCurrentUser(null));
-        console.log('user state changed: Signed Out');
-      }
-    });
-    return () => unSubscribe();
-  }, []);
-
   // --------- show buttons based on user state
   const LoggedInOut = (): JSX.Element => {
     if (user !== null)
@@ -76,12 +48,12 @@ function Header(): JSX.Element {
         <LoggedInOutWrapper>
           <ButtonProfile>
             <Link to='/profile' title='Profile'>
-              <span>{user.displayName}</span>
+              <UserName>{user.displayName}</UserName>
               <UserIcon size={24} />
               <VisuallyHidden>my account</VisuallyHidden>
             </Link>
           </ButtonProfile>
-          <ButtonLogOut title='logout' onClick={SignOutHandler}>
+          <ButtonLogOut title='logout' onClick={Auth.SignOutHandler}>
             <VisuallyHidden>Logout</VisuallyHidden>
             <LogOut size={24} />
           </ButtonLogOut>
@@ -89,7 +61,7 @@ function Header(): JSX.Element {
       );
     else
       return (
-        <ButtonLogIn title='Login' onClick={SignInHandler}>
+        <ButtonLogIn title='Login' onClick={Auth.SignInHandler}>
           <VisuallyHidden>login</VisuallyHidden>
           <LogIn size={24} />
         </ButtonLogIn>
@@ -108,17 +80,22 @@ function Header(): JSX.Element {
               <Counter>{cart.length}</Counter>
               <ShoppingBag size={24} />
             </ButtonCart>
+            <ButtonMenu onClick={() => onMenuButton()}>
+              <Menu size={24} />
+              <VisuallyHidden>Open Menu</VisuallyHidden>
+            </ButtonMenu>
           </WrapperNav>
         </WrapperInner>
       </WrapperCentered>
+      <MobileMenu isOpen={isMenuOpen} onDismiss={onMenuButton} />
     </Wrapper>
   );
 }
 
 // ------------------
 const Button = styled(UnstyledButton)`
-  display: flex;
-  align-items: center;
+  display:flex;
+  align-items:center;
   &:hover {
     opacity: 0.8;
   }
@@ -127,6 +104,9 @@ const Wrapper = styled.div`
   background-color: var(--color-purple);
   color: white;
   width: 100%;
+
+  @media ${QUERIES.tabletAndSmaller} {
+  }
 `;
 const WrapperInner = styled.div`
   display: flex;
@@ -139,12 +119,27 @@ const WrapperNav = styled.div`
   display: flex;
   justify-content: center;
   gap: 32px;
+
+  @media ${QUERIES.tabletAndSmaller} {
+    margin-left:auto;
+  }
 `;
-const Offer = styled.div``;
+const Offer = styled.div`
+  @media ${QUERIES.phoneAndSmaller} {
+    display: none;
+  }
+`;
 const ButtonWithText = styled(Button)`
   justify-content: space-between;
   gap: 8px;
 `;
+
+const UserName = styled.div`
+  @media ${QUERIES.tabletAndSmaller} {
+    display: none;
+  }
+`;
+
 const ButtonLogIn = styled(Button)``;
 const ButtonLogOut = styled(Button)``;
 const ButtonProfile = styled(ButtonWithText)`
@@ -176,6 +171,14 @@ const Counter = styled.div`
 const LoggedInOutWrapper = styled.div`
   display: flex;
   gap: 32px;
+`;
+
+const ButtonMenu = styled(Button)`
+  display: none;
+
+  @media ${QUERIES.tabletAndSmaller} {
+    display: flex;
+  }
 `;
 
 export default Header;

@@ -14,3 +14,10 @@ export const StripeConfig = {
   CHECKOUT_ENDPOINT: 'https://cheerful-faloodeh-d6213b.netlify.app/api/stripe',
 }
 export const Categories = ['armchair','clock','chair','pillow','plant-pot','rug','others'];
+
+
+export const QUERIES = {
+  phoneAndSmaller: '(max-width: 576px)',
+  tabletAndSmaller: '(max-width: 768px)',
+  laptopAndSmaller: '(max-width: 992px)',
+}

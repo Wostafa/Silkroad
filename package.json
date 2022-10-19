@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@reach/dialog": "^0.18.0",
     "@reduxjs/toolkit": "^1.8.6",
     "@stripe/stripe-js": "^1.41.0",
     "@testing-library/jest-dom": "^5.16.5",

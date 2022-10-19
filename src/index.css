@@ -74,6 +74,7 @@ table {
   --color-product-background: #F6F7FB;
   --color-product-background-hover: #2F1AC4;
   --color-button-green: #19D16F;
+  --color-backdrop: #3e3e3ea6;
   --gradient-skyBlue: linear-gradient(121.53deg, #F3F9FF 0%, #F1F0FF 100%);
 
   --font-family-josefin-sans: 'Josefin Sans', sans-serif;
