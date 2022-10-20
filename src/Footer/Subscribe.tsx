@@ -3,6 +3,8 @@ import styled from 'styled-components/macro';
 import { Button, Notify } from '../StyledElements';
 import { db } from '../Firebase/Database';
 import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { QUERIES } from '../Constants';
+
 
 export default function Subscribe(): JSX.Element {
   const [email, setEmail] = useState('');
@@ -58,5 +60,6 @@ const SignUpInput = styled.input`
   font-size: 1rem;
   padding: 0 8px;
   color: var(--color-sub-text);
-  width: 300px;
+  width: 100%;
+  min-width: 200px;
 `;

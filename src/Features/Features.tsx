@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 import { WrapperCentered } from '../StyledElements';
-import { WebsiteTitle } from '../Constants';
+import { WebsiteTitle, QUERIES } from '../Constants';
 
 function Features(): JSX.Element {
   const detail = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa purus gravida.';
@@ -55,8 +55,13 @@ const Wrapper = styled.div`
 
 const WrapperCards = styled.div`
   display: flex;
-  gap: 32px;
+  gap: 16px;
   justify-content: space-between;
+
+  @media ${QUERIES.tabletAndSmaller} {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 `;
 const Card = styled.div`
   display: flex;
@@ -64,7 +69,7 @@ const Card = styled.div`
   justify-content: center;
   align-items: center;
   gap: 16px;
-  height: 300px;
+  min-height: 300px;
   width: 260px;
   border-radius: var(--box-radius);
   padding: 10px;

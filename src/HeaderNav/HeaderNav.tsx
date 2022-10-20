@@ -9,7 +9,7 @@ function Header(): JSX.Element {
   return (
     <WrapperCentered>
       <Wrapper>
-        <Logo>{WebsiteTitle}</Logo>
+        <Logo to='/'>{WebsiteTitle}</Logo>
         <List>
           <Item>
             <Link to='/'>Home</Link>
@@ -37,7 +37,7 @@ const Wrapper = styled.div`
   align-items: center;
   gap:16px;
 `;
-const Logo = styled.a`
+const Logo = styled(Link)`
   font-size: calc(34 / 16 * 1rem);
   font-weight: 700;
 `;

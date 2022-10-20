@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/macro';
+import { QUERIES } from '../Constants';
+
 
 export default function Links(): JSX.Element {
   return (
@@ -76,17 +78,33 @@ const LinksWrapper = styled.div`
   gap: 16px;
   justify-content: space-between;
   flex: 5;
+
+  @media ${QUERIES.tabletAndSmaller} {
+    width: 100%;
+  }
+  @media ${QUERIES.phoneAndSmaller} {
+    flex-direction: column;
+  }
 `;
 const Column = styled.div`
   font-family: var(--font-family-lato);
 
   h3 {
     letter-spacing: var(--letter-spacing-heading-lato);
+    margin-top:0;
+
+    @media ${QUERIES.phoneAndSmaller} {
+      text-align: center;
+    }
   }
 `;
 const List = styled.ul`
   > li {
     margin-bottom: 16px;
+
+    @media ${QUERIES.phoneAndSmaller} {
+      text-align: center;
+    }
 
     &:hover > a {
       color: var(--color-sub-text-hover);

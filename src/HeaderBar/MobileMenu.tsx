@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { WrapperCentered, UnstyledButton, VisuallyHidden } from '../StyledElements';
+import React from 'react';
+import { UnstyledButton, VisuallyHidden } from '../StyledElements';
 import { X } from 'react-feather';
 import { DialogOverlay, DialogContent } from '@reach/dialog';
 import styled, {keyframes} from 'styled-components/macro';
