@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import { Button } from '../StyledElements';
 import {Link} from 'react-router-dom'
+import {QUERIES} from '../Constants';
 ;
 function Banner(): JSX.Element {
   return (
@@ -22,45 +23,57 @@ function Banner(): JSX.Element {
         </ButtonWrapper>
       </TextWrapper>
       <ProductWrapper>
-        <Background>
+        <CirclesWrapper>
           <Circle1 />
           <Circle2 />
-        </Background>
+        </CirclesWrapper>
         <ImageProductWrapper>
-          <ImageProduct src="./template/sofa.png" alt="sofa" />
+          <ImageProduct src="../assets/sofa.png" alt="sofa" />
         </ImageProductWrapper>
-      </ProductWrapper>
       <SaleTagWrapper>
         <SaleTag>50% off</SaleTag>
       </SaleTagWrapper>
+      </ProductWrapper>
     </Wrapper>
   );
 }
 const Wrapper = styled.div`
+  --padding-top-bottom:16px;
   max-width: var(--max-width-full-wide);
   margin: 0 auto;
   margin-bottom: var(--margin-row);
-  height: 450px;
+  min-height: 450px;
   background-color: var(--color-fill-page);
   width: 100%;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 var(--gutter2x);
-  gap: 8px;
+  padding: var(--padding-top-bottom) var(--gutter2x);
+  gap: 16px;
+
+  @media ${QUERIES.phoneAndSmaller}{
+    flex-direction: column;
+  }
 `;
 const LampWrapper = styled.div`
   height: 387px;
   align-self: flex-start;
   flex: 1;
+
+  @media ${QUERIES.phoneAndSmaller}{
+    flex: auto;
+    width:100%;
+  }
 `;
 const ImageLamp = styled.div`
-  width: 200px;
+  width: 100%;
   height: 100%;
-  background-position: center;
-
-  background-image: url('./template/lamp.png');
+  background-size:contain;
+  background-repeat: no-repeat;
+  background-position: top;
+  margin-top: calc(var(--padding-top-bottom) * -1) ;
+  background-image: url('../assets/lamp.png');
 `;
 const TextWrapper = styled.div`
   display: flex;
@@ -71,6 +84,10 @@ const Title = styled.h1`
   font-weight: 700;
   margin: 0;
   max-width: 630px;
+
+  @media ${QUERIES.laptopAndSmaller} {
+    font-size: calc(30 / 16 * 1rem);
+  }
 `;
 const Description = styled.p`
   font-family: var(--font-family-lato);
@@ -79,27 +96,35 @@ const Description = styled.p`
 const ProductWrapper = styled.div`
   flex: 2;
   position: relative;
+  height:100%;
 `;
 const ImageProduct = styled.img`
   width: 100%;
+  height:100%;
+  object-fit:contain;
   display:block;
 `;
 const ImageProductWrapper = styled.div`
-  width: 400px;
-  height:400px;
   position: relative;
+  height:100%;
 `;
-const Background = styled.div`
+const CirclesWrapper = styled.div`
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 400px;
-  height: 400px;
+  left: var(--padding-top-bottom);
+  top: var(--padding-top-bottom);
+  bottom: var(--padding-top-bottom);
+  right: var(--padding-top-bottom);
+
+  @media ${QUERIES.tabletAndSmaller}{
+    display:none;
+  }
 `;
+/* padding top is the same as width in order to have
+ a responsive circle with the same width and height */
 const Circle = styled.div`
   position: absolute;
-  width: 90%;
-  height: 90%;
+  width: calc(90% - var(--padding-top-bottom));
+  padding-top: calc(90% - var(--padding-top-bottom));
   border-radius: 50%;
   background-color: var(--color-pink-circle);
 `;
@@ -123,7 +148,7 @@ const SaleTagWrapper = styled.div`
   justify-content: center;
   align-items: center;
   top: 20px;
-  left: 80%;
+  right: 20px;
   width: 100px;
   height: 100px;
   background-color: var(--color-tag-blue);

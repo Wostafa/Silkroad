@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 import { WrapperCentered } from '../StyledElements';
-import { WebsiteTitle } from '../Constants';
+import { WebsiteTitle, QUERIES } from '../Constants';
 import { Link } from 'react-router-dom';
 import Search from './Search';
 
@@ -35,6 +35,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap:16px;
 `;
 const Logo = styled.a`
   font-size: calc(34 / 16 * 1rem);
@@ -44,6 +45,10 @@ const List = styled.ul`
   display: flex;
   gap: 36px;
   font-family: var(--font-family-lato);
+
+  @media ${QUERIES.tabletAndSmaller} {
+    display:none;
+  }
 `;
 const Item = styled.li`
   font-weight: 600;

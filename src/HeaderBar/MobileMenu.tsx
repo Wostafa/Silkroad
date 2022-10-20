@@ -21,16 +21,16 @@ export default function MobileMenu({ isOpen, onDismiss }: PropsType): JSX.Elemen
         </Button>
         <WrapperNav>
           <Item>
-            <Link to='/'>Home</Link>
+            <Link to='/' onClick={onDismiss}>Home</Link>
           </Item>
           <Item>
-            <Link to='/shop'>Shop</Link>
+            <Link to='/shop' onClick={onDismiss}>Shop</Link>
           </Item>
           <Item>
-            <Link to='/about'>About</Link>
+            <Link to='/about' onClick={onDismiss}>About</Link>
           </Item>
           <Item>
-            <Link to='/contact'>Contact</Link>
+            <Link to='/contact' onClick={onDismiss}>Contact</Link>
           </Item>
         </WrapperNav>
       </Content>
