@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 import {FiltersState} from './Shop';
-import {Categories} from '../Constants';
-// 
+import {Categories, QUERIES} from '../Constants';
 
 interface ParentState {
   filters: FiltersState;
@@ -68,6 +67,13 @@ const Wrapper = styled.aside`
   border-radius: var(--box-radius);
   padding: var(--box-text-padding);
   height: fit-content;
+  display:flex;
+  flex-direction: column;
+
+  @media ${QUERIES.phoneAndSmaller} {
+    flex-direction:row;
+  }
+
 `;
 const FilterWrapper = styled.div`
   display: flex;

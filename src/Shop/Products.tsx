@@ -3,7 +3,7 @@ import styled from 'styled-components/macro';
 import { collectionGroup, getDocs, where, query, Query, DocumentData } from 'firebase/firestore';
 import { db } from '../Firebase/Database';
 import { FiltersState } from './Shop';
-import { Product } from '../Constants';
+import { Product, QUERIES } from '../Constants';
 import { Loading } from '../StyledElements';
 import { Link } from 'react-router-dom';
 
@@ -68,7 +68,7 @@ function Products({ filters }: {filters:FiltersState}): JSX.Element {
           {products.map(product => (
             <Item key={product.key}>
               <ImageWrapper>
-                <img src={product.image} alt={product.name} />
+                <Image src={product.image} alt={product.name} />
               </ImageWrapper>
               <DetailsWrapper>
                 <Name to={`/product/${product.key}`}>{product.name}</Name>
@@ -92,12 +92,16 @@ const Wrapper = styled.div`
 `;
 const List = styled.ul``;
 const Item = styled.li`
-  height: 200px;
+  height: fit-content;
   margin-bottom: 16px;
-  padding: 10px;
+  padding: var(--box-text-padding);
   display: flex;
   gap: 16px;
   box-shadow: var(--shadow-box);
+
+  @media ${QUERIES.tabletAndSmaller} {
+    flex-direction: column;
+  }
 `;
 const DetailsWrapper = styled.div`
   flex: 3;
@@ -106,21 +110,35 @@ const DetailsWrapper = styled.div`
   gap: 8px;
 `;
 const ImageWrapper = styled.div`
-  height: 100%;
+  height:180px;
+  width:180px;
   overflow: hidden;
+  
+  @media ${QUERIES.tabletAndSmaller} {
+    align-self: center;
+    height:250px;
+    width:250px;
+  }
+}`;
 
-  img {
-    height: 100%;
-    object-fit: cover;
-    border-radius: var(--image-radius);
-    transition: transform 200ms;
+const Image = styled.img`
+  height: 100%;
+  width:100%;
+  object-fit: cover;
+  border-radius: var(--image-radius);
+  transition: transform 200ms;
+  display:block;
+  margin:auto;
 
-    &:hover {
-      transform: scale(1.2);
-      transition: transform 300ms;
-    }
+  &:hover {
+    transform: scale(1.2);
+    transition: transform 300ms;
+  }
+
+  @media ${QUERIES.tabletAndSmaller} {
   }
 `;
+
 const Name = styled(Link)`
   display: block;
   width: fit-content;
