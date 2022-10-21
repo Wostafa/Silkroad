@@ -2,7 +2,7 @@ import React, { useState, useEffect, MouseEventHandler } from 'react';
 import styled from 'styled-components/macro';
 import { WrapperCentered, Spacer, Button, Loading, Notify } from '../StyledElements';
 import { useParams, useLocation } from 'react-router-dom';
-import { Product as ProductType } from '../Constants';
+import { Product as ProductType, QUERIES } from '../Constants';
 import { getDocs, collectionGroup } from 'firebase/firestore';
 import { db } from '../Firebase/Database';
 import { addProduct } from '../Redux/CartSlice';
@@ -126,15 +126,26 @@ const Wrapper = styled.div`
   gap: 32px;
   padding: var(--box-text-padding);
   box-shadow: var(--shadow-box);
+
+  @media ${QUERIES.tabletAndSmaller} {
+    flex-direction: column;
+    gap: 0;
+  }
 `;
 const ImageWrapper = styled.div`
   height: 100%;
   flex: 1;
+  max-width: fit-content;
+
+  @media ${QUERIES.tabletAndSmaller} {
+    align-self: center;
+  }
 
   img {
     height: 100%;
     width: 100%;
     object-fit: cover;
+    border-radius: var(--image-radius);
   }
 `;
 const DetailsWrapper = styled.div`
