@@ -6,13 +6,14 @@ import UserProducts from './UserProducts';
 import AddProduct from './AddProduct';
 import { useAppSelector } from '../Redux/Hooks';
 import { selectUser } from '../Redux/UserSlice';
+import {QUERIES} from '../Constants';
 
 function Profile(): JSX.Element {
   const [productsUpdated, setProductsUpdated] = useState<number>(0);
 
   const user = useAppSelector(selectUser);
   const navigate = useNavigate();
-
+  
   useEffect(()=>{
     if (user === null) {
       navigate('/');
@@ -36,6 +37,10 @@ const Wrapper = styled.div`
   gap: 16px;
   justify-content: space-between;
   margin-top: var(--margin-row);
+
+  @media ${QUERIES.tabletAndSmaller} {
+    flex-direction: column;
+  }
 `;
 
 export default Profile;

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button, Loading, Notify } from '../StyledElements';
+import {QUERIES} from '../Constants'
 import { Upload } from '../Firebase/Storage';
 import 'react-toastify/dist/ReactToastify.css';
 // ---------------
@@ -85,7 +86,7 @@ function AddProduct(props: Props): JSX.Element {
           <Description id="description" {...register('description', { required: true })} />
         </InputWrapper>
         <ChooseFileWrapper>
-          <div>Choose an Image:</div>
+          <ChooseFileLabel>Choose an Image:</ChooseFileLabel>
           <ChooseFileWrapperInner>
             <ChooseFile type='file' accept='image/*' {...register('image',
             { required: true, onChange: onChooseImage })}/>
@@ -132,14 +133,16 @@ const Input = styled.input`
   border: 2px solid var(--color-soft-gray);
   font-size: 1rem;
   padding: 0 8px;
-  width: 300px;
+  max-width: 300px;
+  width:100%;
   height: 40px;
 `;
 const Name = styled(Input)``;
 const Category = styled.select`
   border-radius: var(--input-radius);
   border: 2px solid var(--color-soft-gray);
-  width: 300px;
+  max-width: 300px;
+  width:100%;
   height: 40px;
   padding: 8px;
 `;
@@ -152,7 +155,7 @@ const Description = styled.textarea`
   width: 100%;
   height: 250px;
   resize: none;
-  max-width: 400px;
+  max-width: 500px;
 `;
 const ButtonSubmit = styled(Button)`
   width: fit-content;
@@ -162,10 +165,20 @@ const InputError = styled.span`
   color: var(--color-red);
 `;
 const ChooseFileWrapper = styled.div``;
+const ChooseFileLabel = styled.div`
+  @media ${QUERIES.laptopAndSmaller} {
+    margin-bottom:8px;
+  }
+`
 const ChooseFileWrapperInner = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
+
+  @media ${QUERIES.laptopAndSmaller} {
+    flex-direction: column;
+    align-items: start;
+  }
 `;
 const ChooseFile = styled.input`
   background-color: var(--color-fill-page);
@@ -173,6 +186,9 @@ const ChooseFile = styled.input`
   border: none;
   border-radius: var(--input-radius);
   font-family: inherit;
+  min-width: 250px;
+  max-width: 300px;
+  width:100%;
 
   &::file-selector-button {
     color: white;

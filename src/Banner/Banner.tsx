@@ -51,6 +51,8 @@ const Wrapper = styled.div`
   align-items: center;
   padding: var(--padding-top-bottom) var(--gutter2x);
   gap: 16px;
+  // for circles
+  over-flow: hidden;
 
   @media ${QUERIES.phoneAndSmaller}{
     flex-direction: column;

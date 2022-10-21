@@ -4,7 +4,7 @@ import { Trash } from 'react-feather';
 import { UnstyledButton, Loading, Notify } from '../StyledElements';
 import { collection, doc, deleteDoc, getDocsFromServer } from 'firebase/firestore';
 import { db } from '../Firebase/Database';
-import { Product } from '../Constants';
+import { Product, QUERIES } from '../Constants';
 import { selectUser } from '../Redux/UserSlice';
 import { useAppSelector } from '../Redux/Hooks';
 
@@ -88,7 +88,7 @@ const ProductsList = ({ products, deleteHandler }: { products: Product[]; delete
                 </PriceAndCategory>
                 <PriceAndCategory>
                   <span>Price: </span>
-                  {pr.price}$
+                  ${pr.price}
                 </PriceAndCategory>
                 {/* this div is for avoiding bug in flex box with a -webkit-line-clamp child style */}
                 <div>
@@ -131,12 +131,16 @@ const ProductWrapper = styled.div`
   display: flex;
   gap: 16px;
   justify-content: space-between;
+
+  @media ${QUERIES.laptopAndSmaller}{
+    flex-direction: column;
+  }
 `;
 const DetailsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 6px;
-  max-width: 300px;
+  flex:3;
 
   h3 {
     margin: 0;
@@ -145,12 +149,16 @@ const DetailsWrapper = styled.div`
 const ImageWrapper = styled.div`
   width: 200px;
   height: 200px;
-
+  flex:2;
   img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: var(--image-radius);
+  }
+
+  @media ${QUERIES.laptopAndSmaller}{
+    align-self: center;
   }
 `;
 

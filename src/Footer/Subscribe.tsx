@@ -52,7 +52,12 @@ export default function Subscribe(): JSX.Element {
 
 const SignUpWrapper = styled.div`
   display: flex;
-  gap: 5px;
+  gap: 6px;
+  flex-wrap: wrap;
+
+  @media ${QUERIES.phoneAndSmaller} {
+    justify-content: center;
+  }
 `;
 
 const SignUpInput = styled.input`
@@ -60,6 +65,8 @@ const SignUpInput = styled.input`
   font-size: 1rem;
   padding: 0 8px;
   color: var(--color-sub-text);
-  width: 100%;
+  flex: 1;
+  max-width: 250px;
   min-width: 200px;
+  height: 46px;
 `;

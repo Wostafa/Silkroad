@@ -64,10 +64,10 @@ const EmailWrapper = styled.div`
 
   h2 {
     margin: 0;
+  }
 
-    @media ${QUERIES.tabletAndSmaller}{
-      text-align:center;
-    }
+  @media ${QUERIES.tabletAndSmaller}{
+    align-items:center;
   }
 `;
 
