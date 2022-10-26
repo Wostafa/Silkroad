@@ -5,7 +5,6 @@ import { db } from '../Firebase/Database';
 import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { QUERIES } from '../Constants';
 
-
 export default function Subscribe(): JSX.Element {
   const [email, setEmail] = useState('');
   const [isDisabled, setIsDisabled] = useState<boolean>();
@@ -30,7 +29,7 @@ export default function Subscribe(): JSX.Element {
         Notify.Show.success('Your email added!');
       })
       .catch(e => {
-        console.log('Failed to add email: ', e);
+        Notify.Show.error('Failed to add email!');
       });
   };
 
