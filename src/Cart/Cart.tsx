@@ -103,9 +103,9 @@ function Cart(): JSX.Element {
           <TotalBox>
             <Total>
               <TotalH>Totals:</TotalH>
-              <TotalH>${CalculateTotal()}</TotalH>
+              <TotalH data-testid='total-price'>${CalculateTotal()}</TotalH>
             </Total>
-            <CheckOutButton onClick={onCheckout} disabled={cart.length === 0 || waitingForCheckout}>
+            <CheckOutButton data-testid='checkout' onClick={onCheckout} disabled={cart.length === 0 || waitingForCheckout}>
               Proceed To Checkout
             </CheckOutButton>
           </TotalBox>
