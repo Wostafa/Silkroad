@@ -58,7 +58,7 @@ export default function Search(): JSX.Element {
         </Label>
         <Input id='search-input' type='search' value={searchedValue} onChange={onSearchChange} placeholder='Search here' />
       </InputWrapper>
-        <ResultWrapper showDropdown={showDropdown}>
+        <ResultWrapper data-testid='result-wrapper' showDropdown={showDropdown}>
           <ul>
             {results.map(pr => (
               <Item key={pr.key}>
