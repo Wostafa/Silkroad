@@ -46,14 +46,15 @@ function Header(): JSX.Element {
     if (user !== null)
       return (
         <LoggedInOutWrapper>
-          <ButtonProfile>
+          <ButtonProfile name='profile'>
             <Link to='/profile' title='Profile'>
-              <UserName>{user.displayName}</UserName>
+              <UserName data-testid='display-name'>{user.displayName}</UserName>
               <UserIcon size={24} />
               <VisuallyHidden>my account</VisuallyHidden>
             </Link>
           </ButtonProfile>
-          <ButtonLogOut title='logout' onClick={Auth.SignOutHandler}>
+            {/*  */}
+          <ButtonLogOut title='logout' onClick={Auth.SignOutHandler} name='logout'>
             <VisuallyHidden>Logout</VisuallyHidden>
             <LogOut size={24} />
           </ButtonLogOut>
@@ -61,7 +62,7 @@ function Header(): JSX.Element {
       );
     else
       return (
-        <ButtonLogIn title='Login' onClick={Auth.SignInHandler}>
+        <ButtonLogIn title='Login' name='login' onClick={Auth.SignInHandler}>
           <VisuallyHidden>login</VisuallyHidden>
           <LogIn size={24} />
         </ButtonLogIn>
@@ -75,11 +76,12 @@ function Header(): JSX.Element {
           <Offer>Free shipping on domestic orders over $85!</Offer>
           <WrapperNav>
             <LoggedInOut />
-            <ButtonCart onClick={() => cartHandler()} title='Cart'>
+            <ButtonCart onClick={() => cartHandler()} name='cart' title='cart'>
               <VisuallyHidden>Cart</VisuallyHidden>
-              <Counter>{cart.length}</Counter>
+              <Counter data-testid='cart-count'>{cart.length}</Counter>
               <ShoppingBag size={24} />
             </ButtonCart>
+            {/*  */}
             <ButtonMenu onClick={() => onMenuButton()}>
               <Menu size={24} />
               <VisuallyHidden>Open Menu</VisuallyHidden>
