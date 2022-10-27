@@ -2,7 +2,6 @@ import React from 'react';
 import { renderWithProvider, screen, fakeProduct, waitForElementToBeRemoved } from '../TestUtils';
 import userEvent from '@testing-library/user-event';
 import Cart from './Cart';
-import { deleteDoc } from 'firebase/firestore';
 
 jest.mock('firebase/firestore', () => {
   return {
