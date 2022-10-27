@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`products should show correctly 1`] = `
+<div
+  class="ProductGridLatest__WrapperGrid-sc-kjjl7x-1 dRsZHN"
+  data-testid="grid-wrapper"
+>
+  <a
+    class="ProductGridLatest__Link-sc-kjjl7x-2 iOzveQ"
+    href="/product/1"
+  >
+    <div
+      class="ProductGridLatest__ImageWrapper-sc-kjjl7x-3 hsSaNp"
+    >
+      <img
+        alt=""
+        class="ProductGridLatest__Image-sc-kjjl7x-4 gWTSJv"
+        src="image.png"
+      />
+    </div>
+    <h4
+      class="ProductGridLatest__Name-sc-kjjl7x-5 vjfcA"
+    >
+      blue chair
+    </h4>
+    <div
+      class="ProductGridLatest__Price-sc-kjjl7x-6 cEdWyx"
+    >
+      $
+      120
+    </div>
+  </a>
+</div>
+`;

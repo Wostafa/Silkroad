@@ -43,7 +43,7 @@ function ProductGridLatest(): JSX.Element {
           </LoadingWrapper>
         ) : (
           <>
-            <WrapperGrid>
+            <WrapperGrid data-testid='grid-wrapper'>
               {products.slice(0, 12).map(pr => (
                 <Link to={`/product/${pr.key}`} key={pr.key} state={pr}>
                   <ImageWrapper>
@@ -54,7 +54,9 @@ function ProductGridLatest(): JSX.Element {
                 </Link>
               ))}
             </WrapperGrid>
-            <Button href='#'>See More</Button>
+            <Button as={LinkRouter} to='/shop'>
+              See More
+            </Button>
           </>
         )}
       </Wrapper>
