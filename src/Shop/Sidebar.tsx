@@ -1,60 +1,65 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
-import {FiltersState} from './Shop';
-import {Categories, QUERIES} from '../Constants';
+import { FiltersState } from './Shop';
+import { Categories, QUERIES, PriceRanges } from '../Constants';
 
 interface ParentState {
   filters: FiltersState;
-  setFilters: React.Dispatch<React.SetStateAction<FiltersState>>
+  setFilters: React.Dispatch<React.SetStateAction<FiltersState>>;
 }
 
-function Sidebar({filters, setFilters}:ParentState): JSX.Element {
-  
+function Sidebar({ filters, setFilters }: ParentState): JSX.Element {
   interface PriceRange {
-    [key: number]: boolean
+    [key: number]: boolean;
   }
 
-  const [priceRangeChecked, setPriceRangeChecked] = useState<PriceRange>([])
-  const priceRangeArray = [[0,50],[50,100],[100,200]];
+  const [priceRangeChecked, setPriceRangeChecked] = useState<PriceRange>([]);
 
   // -----------------
   const categoryHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const newCategoryState = { ...filters.categories, [e.target.value]: e.target.checked };
-    setFilters({...filters ,categories: newCategoryState, });
+    setFilters({ ...filters, categories: newCategoryState });
   };
 
   // -----------
   const priceHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const newPriceRangeState = {[e.target.value]: e.target.checked };
+    const newPriceRangeState = { [e.target.value]: e.target.checked };
     setPriceRangeChecked(newPriceRangeState);
-    setFilters({...filters, priceRange: priceRangeArray[Number(e.target.value)] as [number, number]});
+    setFilters({ ...filters, priceRange: PriceRanges[Number(e.target.value)] as [number, number] });
   };
-
 
   // ----
   return (
     <Wrapper>
       <FilterWrapper>
         <>
-        <Title>Categories</Title>
-        {Categories.map((category) => (
-          <Label key={category}>
-            <input type='checkbox' checked={filters.categories[category] ?? false} value={category} onChange={categoryHandler} />
-            <span>{category}</span>
-          </Label>
-        ))}
+          <Title>Categories</Title>
+          {Categories.map(category => (
+            <Label key={category}>
+              <input
+                type='checkbox'
+                checked={filters.categories[category] ?? false}
+                value={category}
+                name={category}
+                onChange={categoryHandler}
+              />
+              <span>{category}</span>
+            </Label>
+          ))}
         </>
       </FilterWrapper>
 
       <FilterWrapper>
         <>
-        <Title>Price filter</Title>
-          {priceRangeArray.map((range, index) => (
+          <Title>Price filter</Title>
+          {PriceRanges.map((range, index) => (
             <Label key={index}>
-                <input type='radio' checked={priceRangeChecked[index] ?? false} value={index} onChange={priceHandler} />
-                <span>${range[0]} - ${range[1]}</span>
-              </Label>
-            ))}
+              <input type='radio' checked={priceRangeChecked[index] ?? false} value={index} onChange={priceHandler} />
+              <span>
+                ${range[0]} - ${range[1]}
+              </span>
+            </Label>
+          ))}
         </>
       </FilterWrapper>
     </Wrapper>
@@ -67,13 +72,12 @@ const Wrapper = styled.aside`
   border-radius: var(--box-radius);
   padding: var(--box-text-padding);
   height: fit-content;
-  display:flex;
+  display: flex;
   flex-direction: column;
 
   @media ${QUERIES.phoneAndSmaller} {
-    flex-direction:row;
+    flex-direction: row;
   }
-
 `;
 const FilterWrapper = styled.div`
   display: flex;

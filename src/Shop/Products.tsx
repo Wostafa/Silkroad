@@ -7,14 +7,13 @@ import { Product, QUERIES } from '../Constants';
 import { Loading } from '../StyledElements';
 import { Link } from 'react-router-dom';
 
-function Products({ filters }: {filters:FiltersState}): JSX.Element {
+function Products({ filters }: { filters: FiltersState }): JSX.Element {
   // const products = [1, 2];
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   // --------
   useEffect(() => {
-    
     setIsLoading(true);
     console.log('Filters: ', filters);
     const filterCategory = filters.categories;
@@ -38,11 +37,10 @@ function Products({ filters }: {filters:FiltersState}): JSX.Element {
         result.forEach(doc => {
           const data = doc.data() as Product;
           // --- filter based on price
-          if(filterPrice.length === 0){
+          if (filterPrice.length === 0) {
             _productArray.push(data);
-          }
-          else {
-            if(data.price >= filterPrice[0] && data.price <= filterPrice[1]){
+          } else {
+            if (data.price >= filterPrice[0] && data.price <= filterPrice[1]) {
               _productArray.push(data);
             }
           }
@@ -123,12 +121,12 @@ const ImageWrapper = styled.div`
 
 const Image = styled.img`
   height: 100%;
-  width:100%;
+  width: 100%;
   object-fit: cover;
   border-radius: var(--image-radius);
   transition: transform 200ms;
-  display:block;
-  margin:auto;
+  display: block;
+  margin: auto;
 
   &:hover {
     transform: scale(1.2);
@@ -145,7 +143,7 @@ const Name = styled(Link)`
   font-weight: bold;
   color: var(--color-product-name);
   font-size: var(--font-size-h3);
-  text-transform:capitalize;
+  text-transform: capitalize;
 
   &:hover {
     color: var(--color-link-hover);
