@@ -23,7 +23,6 @@ function UserProducts({ productsUpdated }: { productsUpdated: number }): JSX.Ele
 
     const getProducts = async (): Promise<void> => {
       const querySnapshot = await getDocsFromServer(collection(db, `users/${user.uid}/products`));
-
       const productsArray: Product[] = [];
       querySnapshot.forEach(doc => {
         productsArray.push(doc.data() as Product);
@@ -35,6 +34,7 @@ function UserProducts({ productsUpdated }: { productsUpdated: number }): JSX.Ele
     //
     getProducts().catch(e => {
       setIsLoading(false);
+      console.log('Failed to load products: ', e);
       Notify.Show.error("Can't load your products!");
     });
   }, [productsUpdated, user, productDeleted]);
@@ -56,7 +56,7 @@ function UserProducts({ productsUpdated }: { productsUpdated: number }): JSX.Ele
     <Wrapper>
       <h3>Your Products</h3>
       {isLoading ? (
-        <LoadingWrapper>
+        <LoadingWrapper data-testid='loading'>
           <Loading />
         </LoadingWrapper>
       ) : (
@@ -87,8 +87,7 @@ const ProductsList = ({ products, deleteHandler }: { products: Product[]; delete
                   {pr.category}
                 </PriceAndCategory>
                 <PriceAndCategory>
-                  <span>Price: </span>
-                  ${pr.price}
+                  <span>Price: </span>${pr.price}
                 </PriceAndCategory>
                 {/* this div is for avoiding bug in flex box with a -webkit-line-clamp child style */}
                 <div>
@@ -132,7 +131,7 @@ const ProductWrapper = styled.div`
   gap: 16px;
   justify-content: space-between;
 
-  @media ${QUERIES.laptopAndSmaller}{
+  @media ${QUERIES.laptopAndSmaller} {
     flex-direction: column;
   }
 `;
@@ -140,7 +139,7 @@ const DetailsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 6px;
-  flex:3;
+  flex: 3;
 
   h3 {
     margin: 0;
@@ -149,7 +148,7 @@ const DetailsWrapper = styled.div`
 const ImageWrapper = styled.div`
   width: 200px;
   height: 200px;
-  flex:2;
+  flex: 2;
   img {
     width: 100%;
     height: 100%;
@@ -157,7 +156,7 @@ const ImageWrapper = styled.div`
     border-radius: var(--image-radius);
   }
 
-  @media ${QUERIES.laptopAndSmaller}{
+  @media ${QUERIES.laptopAndSmaller} {
     align-self: center;
   }
 `;
