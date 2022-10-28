@@ -58,7 +58,7 @@ function Products({ filters }: { filters: FiltersState }): JSX.Element {
   return (
     <Wrapper>
       {isLoading ? (
-        <LoadingWrapper>
+        <LoadingWrapper data-testid='loading'>
           <Loading />
         </LoadingWrapper>
       ) : (
