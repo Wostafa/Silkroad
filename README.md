@@ -19,7 +19,10 @@ To test payment use card number: 4242 4242 4242 4242, a valid future date, such 
 ## Features
 * Responsive
 * Authentication with google account
-* Adding and removing product by users
+* Users can add new products and remove them
+* Adding and removing from the cart
+* Searching products by name
+* Filtering products by category and price range
 
 ## Screenshot
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
