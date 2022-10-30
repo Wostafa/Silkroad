@@ -13,4 +13,4 @@ Uses Firebase and Netlify as a backend and Stripe for payments and Redux for sta
 * Adding and removing product by users
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[product-screenshot]: https://raw.githubusercontent.com/othneildrew/Best-README-Template/master/images/screenshot.png
+[product-screenshot]: screenshot.png

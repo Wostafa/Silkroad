@@ -12,7 +12,7 @@ export interface Product {
 export const StripeConfig = {
   PUB_KEY:
     'pk_test_51LtQshDaz0enZrbvF4NTgiXmWm4hhT6PT8DXL8KMlJrFK7IsuQDUg5VXyWfw1rRd5pnT14kT1oqRkEzCZJGQfxyX00ewT4xM1k',
-  CHECKOUT_ENDPOINT: 'https://cheerful-faloodeh-d6213b.netlify.app/api/stripe',
+  CHECKOUT_ENDPOINT: 'https://silkroad-paymant.netlify.app/api/stripe',
 };
 export const Categories = ['armchair', 'clock', 'chair', 'pillow', 'plant-pot', 'rug', 'others'];
 export const PriceRanges = [
