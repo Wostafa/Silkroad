@@ -1,7 +1,7 @@
 <div align='center'>
-<h2 align='center'>SilkRoad - React eCommerce</h2>
-<h3 align='center'>Firebase + Netlify + Stripe</h3>
-<a href='https://silkroad.netlify.app/' target="_blank">View Demo</a>
+<h3 align='center'>SilkRoad - React eCommerce</h3>
+<h4 align='center'>Firebase + Netlify + Stripe</h4>
+<a href='https://silkroad.netlify.app/'>View Demo</a>
 |
 <a href='https://github.com/Wostafa/Silkroad#features'>Features</a>
 |
