@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button, Loading, Notify } from '../StyledElements';
-import {QUERIES} from '../Constants'
+import { QUERIES } from '../Constants';
 import { Upload } from '../Firebase/Storage';
 import 'react-toastify/dist/ReactToastify.css';
 // ---------------
 interface Props {
-  setProductsUpdated: React.Dispatch<React.SetStateAction<number>>
+  setProductsUpdated: React.Dispatch<React.SetStateAction<number>>;
 }
 
 function AddProduct(props: Props): JSX.Element {
@@ -28,12 +28,12 @@ function AddProduct(props: Props): JSX.Element {
 
   // ----------------- set preview of uploaded image
   const [image, setImage] = useState('./assets/placeholder-upload.svg');
-  const [adding, setAdding] = useState(false); 
+  const [adding, setAdding] = useState(false);
   const onChooseImage = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const img = URL.createObjectURL(e.target.files?.[0] as Blob);
     setImage(img);
   };
-  
+
   // ----------------- send product to firebase
   const onSubmit: SubmitHandler<FormData> = data => {
     setAdding(true);
@@ -88,14 +88,14 @@ function AddProduct(props: Props): JSX.Element {
         <ChooseFileWrapper>
           <ChooseFileLabel>Choose an Image:</ChooseFileLabel>
           <ChooseFileWrapperInner>
-            <ChooseFile type='file' accept='image/*' {...register('image',
+            <ChooseFile type='file' accept='image/*' data-testid='choose-file' {...register('image',
             { required: true, onChange: onChooseImage })}/>
-            <Image src={image}/>
+            <Image data-testid='file-preview' src={image}/>
           </ChooseFileWrapperInner>
           {errors.image != null && <InputError>Image is required</InputError>}
         </ChooseFileWrapper>
         {adding ? (
-          <Loading />
+          <Loading data-testid='loading' />
         ):(
           <ButtonSubmit>Add</ButtonSubmit>
         )
@@ -134,7 +134,7 @@ const Input = styled.input`
   font-size: 1rem;
   padding: 0 8px;
   max-width: 300px;
-  width:100%;
+  width: 100%;
   height: 40px;
 `;
 const Name = styled(Input)``;
@@ -142,7 +142,7 @@ const Category = styled.select`
   border-radius: var(--input-radius);
   border: 2px solid var(--color-soft-gray);
   max-width: 300px;
-  width:100%;
+  width: 100%;
   height: 40px;
   padding: 8px;
 `;
@@ -167,9 +167,9 @@ const InputError = styled.span`
 const ChooseFileWrapper = styled.div``;
 const ChooseFileLabel = styled.div`
   @media ${QUERIES.laptopAndSmaller} {
-    margin-bottom:8px;
+    margin-bottom: 8px;
   }
-`
+`;
 const ChooseFileWrapperInner = styled.div`
   display: flex;
   align-items: center;
@@ -188,7 +188,7 @@ const ChooseFile = styled.input`
   font-family: inherit;
   min-width: 250px;
   max-width: 300px;
-  width:100%;
+  width: 100%;
 
   &::file-selector-button {
     color: white;
