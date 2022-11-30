@@ -5,15 +5,19 @@
 |
 <a href='https://github.com/Wostafa/Silkroad#features'>Features</a>
 |
-<a href='https://github.com/Wostafa/Silkroad#screenshot'>Screenshot</a>
+<a href='https://github.com/Wostafa/Silkroad#technologies'>Technologies</a>
 
 </div>
+<br>
+
+[![Product Name Screen Shot][product-screenshot]](https://silkroad.netlify.app)
+
 <br>
 
 ## About This Project
 This project is just for my portfolio. See live demo: https://silkroad.netlify.app  
 The design is inspired by this [Figma](https://www.figma.com/community/file/967759864749832815).  
-Uses Firebase and Netlify as a backend and Stripe for payments and Redux for state management.  
+Uses Firebase and Netlify as a backend and Stripe for payments.  
 To test payment use card number: 4242 4242 4242 4242, a valid future date, such as 12/34 and any three-digit CVC. 
 
 ## Features
@@ -24,9 +28,18 @@ To test payment use card number: 4242 4242 4242 4242, a valid future date, such 
 * Searching products by name
 * Filtering products by category and price range
 
-## Screenshot
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+## Technologies
+* Jest
+* Redux
+* Stripe
+* Netlify
+* Firebase
+* React Hook Form
+* React Router Dom
+* Styled Component
+* React Testing Library
+
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[product-screenshot]: screenshot.png
+[product-screenshot]: mockup.png
