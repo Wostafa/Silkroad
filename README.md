@@ -12,7 +12,6 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://silkroad.netlify.app)
 
-<br>
 
 ## About This Project
 This project is just for my portfolio. See live demo: https://silkroad.netlify.app  
@@ -22,10 +21,10 @@ To test payment use card number: 4242 4242 4242 4242, a valid future date, such 
 
 ## Features
 * Responsive
+* Searching products by name
+* Adding and removing from the cart
 * Authentication with google account
 * Users can add new products and remove them
-* Adding and removing from the cart
-* Searching products by name
 * Filtering products by category and price range
 
 ## Technologies
